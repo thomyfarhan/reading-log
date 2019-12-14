@@ -12,8 +12,14 @@ import kotlinx.android.synthetic.main.item_list_read.view.*
  * Adapter creates a View Holder and fills it with
  * data for the Recycler View to display
  */
-class ReadAdapter(val listReads: MutableList<Read>):
+class ReadAdapter():
     RecyclerView.Adapter<ReadAdapter.ReadViewHolder>() {
+
+    var listReads = listOf<Read>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     /**
      * Create the view by inflating layout
