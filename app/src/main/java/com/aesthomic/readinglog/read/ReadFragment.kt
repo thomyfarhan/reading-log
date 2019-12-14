@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -33,11 +33,22 @@ class ReadFragment : Fragment() {
             R.layout.fragment_read, container, false)
 
         initViewModel()
-
-        binding.rvRead.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvRead.adapter = ReadAdapter()
+        initRecyclerView()
 
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+        binding.rvRead.layoutManager = LinearLayoutManager(requireContext())
+
+        val adapter = ReadAdapter()
+        binding.rvRead.adapter = adapter
+
+        viewModel.reads.observe(this, Observer {
+            it?.let {
+                adapter.listReads = it
+            }
+        })
     }
 
     private fun initViewModel() {
@@ -47,6 +58,9 @@ class ReadFragment : Fragment() {
         viewModelFactory = ReadViewModelFactory(database, application)
         viewModel = ViewModelProviders.of(
             this, viewModelFactory).get(ReadViewModel::class.java)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
 
