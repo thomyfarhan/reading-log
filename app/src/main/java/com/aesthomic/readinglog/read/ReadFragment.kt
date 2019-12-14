@@ -6,16 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 
 import com.aesthomic.readinglog.R
+import com.aesthomic.readinglog.databinding.FragmentReadBinding
 
 class ReadFragment : Fragment() {
+
+    private lateinit var binding: FragmentReadBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_read, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_read, container, false)
+
+        return binding.root
     }
 
 
