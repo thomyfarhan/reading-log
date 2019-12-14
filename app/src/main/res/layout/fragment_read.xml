@@ -29,11 +29,24 @@
             android:visibility="visible"
             android:src="@drawable/ic_stop"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fab_delete"
             app:layout_constraintEnd_toStartOf="@id/fab_start"
             app:maxImageSize="@dimen/fab_icon"
             app:tint="@color/colorStop"
             app:backgroundTint="@color/colorFab"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:visibility="visible"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:maxImageSize="@dimen/fab_icon"
+            app:tint="@color/colorDelete"
+            app:backgroundTint="@color/colorFabDelete"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
