@@ -13,7 +13,7 @@ data class Read(
     var startTimeMillis: Long = 0L,
 
     @ColumnInfo(name = "end_time_millis")
-    var endTimeMillis: Long = 0L,
+    var endTimeMillis: Long = startTimeMillis,
 
     @ColumnInfo(name = "book_name")
     var bookName: String = "",
