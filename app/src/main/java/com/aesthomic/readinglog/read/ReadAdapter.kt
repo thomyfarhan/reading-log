@@ -1,6 +1,5 @@
 package com.aesthomic.readinglog.read
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,9 +29,7 @@ class ReadAdapter:
      * and return the view as ViewHolder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReadViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_list_read, parent, false)
-        return ReadViewHolder(view)
+        return ReadViewHolder.from(parent)
     }
 
     /**
@@ -48,16 +45,16 @@ class ReadAdapter:
      */
     override fun onBindViewHolder(holder: ReadViewHolder, position: Int) {
         val read = listReads[position]
-        val res = holder.itemView.context.resources
-        holder.bind(read, res)
+        holder.bind(read)
     }
 
     /**
      * Layout for the items to be displayed inside the RecyclerView
      */
-    inner class ReadViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
+    class ReadViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
 
-        fun bind(read: Read, res: Resources) {
+        fun bind(read: Read) {
+            val res = view.context.resources
             view.tv_list_read_month.text =
                 convertLongToMonth(read.startTimeMillis)
             view.tv_list_read_date.text =
@@ -65,6 +62,14 @@ class ReadAdapter:
             view.tv_list_read_time.text =
                 convertLongToDuration(read.startTimeMillis, read.endTimeMillis, res)
             view.tv_list_read_title.text = read.bookName
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ReadViewHolder {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_list_read, parent, false)
+                return ReadViewHolder(view)
+            }
         }
     }
 }
