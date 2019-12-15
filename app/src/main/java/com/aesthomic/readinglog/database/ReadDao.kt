@@ -49,6 +49,6 @@ interface ReadDao {
     /**
      * Return the current read object
      */
-    @Query("SELECT * FROM read ORDER BY 1 DESC LIMIT 1")
+    @Query("SELECT * FROM read ORDER BY id DESC LIMIT 1")
     fun getCurrentRead(): Read?
 }
