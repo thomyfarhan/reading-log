@@ -1,10 +1,14 @@
 package com.aesthomic.readinglog.read
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aesthomic.readinglog.R
+import com.aesthomic.readinglog.convertLongToDate
+import com.aesthomic.readinglog.convertLongToDuration
+import com.aesthomic.readinglog.convertLongToMonth
 import com.aesthomic.readinglog.database.Read
 import kotlinx.android.synthetic.main.item_list_read.view.*
 
@@ -12,7 +16,7 @@ import kotlinx.android.synthetic.main.item_list_read.view.*
  * Adapter creates a View Holder and fills it with
  * data for the Recycler View to display
  */
-class ReadAdapter():
+class ReadAdapter:
     RecyclerView.Adapter<ReadAdapter.ReadViewHolder>() {
 
     var listReads = listOf<Read>()
@@ -43,7 +47,9 @@ class ReadAdapter():
      * every items in the list need to run this function
      */
     override fun onBindViewHolder(holder: ReadViewHolder, position: Int) {
-        holder.bind(listReads[position])
+        val read = listReads[position]
+        val res = holder.itemView.context.resources
+        holder.bind(read, res)
     }
 
     /**
@@ -51,8 +57,14 @@ class ReadAdapter():
      */
     inner class ReadViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
 
-        fun bind(read: Read) {
-            view.tvStartTime.text = read.startTimeMillis.toString()
+        fun bind(read: Read, res: Resources) {
+            view.tv_list_read_month.text =
+                convertLongToMonth(read.startTimeMillis)
+            view.tv_list_read_date.text =
+                convertLongToDate(read.startTimeMillis)
+            view.tv_list_read_time.text =
+                convertLongToDuration(read.startTimeMillis, read.endTimeMillis, res)
+            view.tv_list_read_title.text = read.bookName
         }
     }
 }
