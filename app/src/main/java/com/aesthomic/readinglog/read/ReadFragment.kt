@@ -46,7 +46,7 @@ class ReadFragment : Fragment() {
 
         viewModel.reads.observe(this, Observer {
             it?.let {
-                adapter.listReads = it
+                adapter.submitList(it)
             }
         })
     }

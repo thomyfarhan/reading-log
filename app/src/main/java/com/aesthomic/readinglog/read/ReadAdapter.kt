@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.convertLongToDate
@@ -17,13 +18,7 @@ import kotlinx.android.synthetic.main.item_list_read.view.*
  * data for the Recycler View to display
  */
 class ReadAdapter:
-    RecyclerView.Adapter<ReadAdapter.ReadViewHolder>() {
-
-    var listReads = listOf<Read>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    ListAdapter<Read, ReadAdapter.ReadViewHolder>(ReadDiffCallback()) {
 
     /**
      * Create the view by inflating layout
@@ -34,18 +29,15 @@ class ReadAdapter:
     }
 
     /**
-     * Return the size of list
-     */
-    override fun getItemCount(): Int {
-        return listReads.size
-    }
-
-    /**
      * Bind the view that we already create on onCreateViewHolder function
      * every items in the list need to run this function
      */
     override fun onBindViewHolder(holder: ReadViewHolder, position: Int) {
-        val read = listReads[position]
+        /**
+         * same as getItemCount function
+         */
+        val read = getItem(position)
+
         holder.bind(read)
     }
 
