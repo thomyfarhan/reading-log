@@ -11,9 +11,9 @@ private val ONE_DAY_MILLI = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
 
 fun convertLongToDuration(startTime: Long, endTime: Long, res: Resources): String {
     val duration = endTime - startTime
-    val seconds = TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS)
-    val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
-    val hours = TimeUnit.HOURS.convert(duration, TimeUnit.MILLISECONDS)
+    val seconds = TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) % 60
+    val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS) % 60
+    val hours = TimeUnit.HOURS.convert(duration, TimeUnit.MILLISECONDS) % 24
     val days = TimeUnit.DAYS.convert(duration, TimeUnit.MILLISECONDS)
 
     return when {
