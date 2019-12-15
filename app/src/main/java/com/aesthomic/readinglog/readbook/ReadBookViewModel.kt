@@ -3,7 +3,6 @@ package com.aesthomic.readinglog.readbook
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.database.ReadDao
 import kotlinx.coroutines.*
 
@@ -19,24 +18,15 @@ class ReadBookViewModel (
     val eventSubmit: LiveData<Boolean>
         get() = _eventSubmit
 
-    fun updateRead(bookName: String, page: Int) {
+    fun updateRead(time: Long, bookName: String, page: Int) {
         uiScope.launch {
-            val read = getReadById(readKey) ?: return@launch
-            read.bookName = bookName
-            read.chapter = page
-            update(read)
-        }
-    }
-
-    private suspend fun getReadById(key: Long): Read? {
-        return withContext(Dispatchers.IO) {
-            database.get(key)
-        }
-    }
-
-    private suspend fun update(read: Read) {
-        withContext(Dispatchers.IO) {
-            database.update(read)
+            withContext(Dispatchers.IO) {
+                val read = database.get(readKey) ?: return@withContext
+                read.endTimeMillis = time
+                read.bookName = bookName
+                read.chapter = page
+                database.update(read)
+            }
         }
     }
 
