@@ -3,6 +3,7 @@ package com.aesthomic.readinglog.read
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.convertLongToDate
@@ -72,4 +73,19 @@ class ReadAdapter:
             }
         }
     }
+}
+
+/**
+ * Use DiffUtil to optimize RecyclerView
+ * when data has been changed
+ */
+class ReadDiffCallback: DiffUtil.ItemCallback<Read>() {
+    override fun areItemsTheSame(oldItem: Read, newItem: Read): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Read, newItem: Read): Boolean {
+        return oldItem == newItem
+    }
+
 }
