@@ -2,4 +2,7 @@
     <string name="app_name">Reading Log</string>
     <string name="duration">%1$d %2$s, %3$d %4$s</string>
     <string name="duration_seconds">%1$d %2$s</string>
+    <string name="book_title">Book Title</string>
+    <string name="chapter">Chapter</string>
+    <string name="submit">Submit</string>
 </resources>
