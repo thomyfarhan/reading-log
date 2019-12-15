@@ -18,6 +18,10 @@ class ReadViewModel(
 
     private val currentRead = MutableLiveData<Read?>()
 
+    private val _navigateToReadBook = MutableLiveData<Read?>()
+    val navigateToReadBook: LiveData<Read?>
+        get() = _navigateToReadBook
+
     val reads = database.getAllReads()
 
     init {
@@ -46,12 +50,6 @@ class ReadViewModel(
         }
     }
 
-    private suspend fun update(read: Read) {
-        withContext(Dispatchers.IO) {
-            database.update(read)
-        }
-    }
-
     private suspend fun insert(read: Read) {
         withContext(Dispatchers.IO) {
             database.insert(read)
@@ -68,8 +66,7 @@ class ReadViewModel(
     fun onStopReading() {
         uiScope.launch {
             val oldRead = currentRead.value ?: return@launch
-            oldRead.endTimeMillis = System.currentTimeMillis()
-            update(oldRead)
+            _navigateToReadBook.value = oldRead
         }
     }
 
@@ -81,8 +78,12 @@ class ReadViewModel(
         }
     }
 
+    fun onNavigateReadBookDone() {
+        _navigateToReadBook.value = null
+    }
+
     override fun onCleared() {
         super.onCleared()
-        uiScope.cancel()
+        viewModelJob.cancel()
     }
 }

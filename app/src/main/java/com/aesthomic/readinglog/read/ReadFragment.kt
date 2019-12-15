@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.aesthomic.readinglog.R
@@ -20,9 +21,6 @@ import com.aesthomic.readinglog.databinding.FragmentReadBinding
 class ReadFragment : Fragment() {
 
     private lateinit var binding: FragmentReadBinding
-    private lateinit var application: Application
-    private lateinit var database: ReadDao
-    private lateinit var viewModelFactory: ReadViewModelFactory
     private lateinit var viewModel: ReadViewModel
 
     override fun onCreateView(
@@ -34,6 +32,16 @@ class ReadFragment : Fragment() {
 
         initViewModel()
         initRecyclerView()
+
+        viewModel.navigateToReadBook.observe(this, Observer {
+            it?.let {
+                this.findNavController().navigate(
+                    ReadFragmentDirections.
+                        actionReadDestinationToReadBookDestination(it.id)
+                )
+                viewModel.onNavigateReadBookDone()
+            }
+        })
 
         return binding.root
     }
@@ -52,10 +60,10 @@ class ReadFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        application = requireNotNull(this.activity).application
-        database = ReadingLogDatabase.getInstance(application).readDao
+        val application = requireNotNull(this.activity).application
+        val database = ReadingLogDatabase.getInstance(application).readDao
 
-        viewModelFactory = ReadViewModelFactory(database, application)
+        val viewModelFactory = ReadViewModelFactory(database, application)
         viewModel = ViewModelProviders.of(
             this, viewModelFactory).get(ReadViewModel::class.java)
 
