@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.database.ReadingLogDatabase
@@ -27,6 +29,21 @@ class ReadBookFragment : Fragment() {
 
         initViewModel()
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        viewModel.eventSubmit.observe(this, Observer {
+            if (it) {
+                val bookName = binding.etReadbookTitle.text.toString()
+                val page = binding.etReadbookPage.text.toString().toInt()
+                viewModel.updateRead(bookName, page)
+                viewModel.onSubmitDone()
+
+                this.findNavController().navigate(
+                    ReadBookFragmentDirections.actionReadBookDestinationToReadDestination())
+            }
+        })
+
         return binding.root
     }
 
@@ -36,7 +53,7 @@ class ReadBookFragment : Fragment() {
         val readKey = ReadBookFragmentArgs.fromBundle(requireArguments()).readKey
 
         val viewModelFactory = ReadBookViewModelFactory(
-            readKey, database, application)
+            readKey, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ReadBookViewModel::class.java)
     }
