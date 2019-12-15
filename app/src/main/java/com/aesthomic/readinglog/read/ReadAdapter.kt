@@ -1,17 +1,15 @@
 package com.aesthomic.readinglog.read
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.convertLongToDate
 import com.aesthomic.readinglog.convertLongToDuration
 import com.aesthomic.readinglog.convertLongToMonth
 import com.aesthomic.readinglog.database.Read
-import kotlinx.android.synthetic.main.item_list_read.view.*
+import com.aesthomic.readinglog.databinding.ItemListReadBinding
 
 /**
  * Adapter creates a View Holder and fills it with
@@ -44,24 +42,27 @@ class ReadAdapter:
     /**
      * Layout for the items to be displayed inside the RecyclerView
      */
-    class ReadViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
+    class ReadViewHolder(private val binding: ItemListReadBinding):
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(read: Read) {
-            val res = view.context.resources
-            view.tv_list_read_month.text =
+            val res = binding.context.resources
+            binding.tvListReadMonth.text =
                 convertLongToMonth(read.startTimeMillis)
-            view.tv_list_read_date.text =
+            binding.tvListReadDate.text =
                 convertLongToDate(read.startTimeMillis)
-            view.tv_list_read_time.text =
+            binding.tvListReadTime.text =
                 convertLongToDuration(read.startTimeMillis, read.endTimeMillis, res)
-            view.tv_list_read_title.text = read.bookName
+            binding.tvListReadTitle.text = read.bookName
         }
 
         companion object {
             fun from(parent: ViewGroup): ReadViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_list_read, parent, false)
-                return ReadViewHolder(view)
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemListReadBinding.inflate(
+                    layoutInflater, parent, false)
+
+                return ReadViewHolder(binding)
             }
         }
     }
