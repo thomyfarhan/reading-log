@@ -46,14 +46,13 @@ class ReadAdapter:
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(read: Read) {
-            val res = binding.context.resources
-            binding.tvListReadMonth.text =
-                convertLongToMonth(read.startTimeMillis)
-            binding.tvListReadDate.text =
-                convertLongToDate(read.startTimeMillis)
-            binding.tvListReadTime.text =
-                convertLongToDuration(read.startTimeMillis, read.endTimeMillis, res)
-            binding.tvListReadTitle.text = read.bookName
+            binding.read = read
+
+            /**
+             * this call is an optimization that asks data binding
+             * to execute any pending bindings
+             */
+            binding.executePendingBindings()
         }
 
         companion object {
