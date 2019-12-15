@@ -9,5 +9,24 @@
         android:id="@+id/read_destination"
         android:name="com.aesthomic.readinglog.read.ReadFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_read"/>
+        tools:layout="@layout/fragment_read">
+        <action
+            android:id="@+id/action_read_destination_to_read_book_destination"
+            app:destination="@id/read_book_destination" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/read_book_destination"
+        android:name="com.aesthomic.readinglog.readbook.ReadBookFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_read_book">
+        <action
+            android:id="@+id/action_read_book_destination_to_read_destination"
+            app:destination="@id/read_destination"
+            app:popUpTo="@id/read_destination"
+            app:popUpToInclusive="true"/>
+        <argument
+            android:name="readKey"
+            app:argType="long" />
+    </fragment>
 </navigation>
