@@ -5,4 +5,9 @@
     <string name="book_title">Book Title</string>
     <string name="chapter">Chapter</string>
     <string name="submit">Submit</string>
+    <string name="book_title">Book Title</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="last_page">Last Page</string>
+    <string name="close">Close</string>
 </resources>
