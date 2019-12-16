@@ -7,12 +7,17 @@
         <variable
             name="read"
             type="com.aesthomic.readinglog.database.Read" />
+
+        <variable
+            name="clickListener"
+            type="com.aesthomic.readinglog.read.ReadListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(read)}">
 
         <TextView
             android:id="@+id/tv_list_read_month"

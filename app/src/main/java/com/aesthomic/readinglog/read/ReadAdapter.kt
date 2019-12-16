@@ -15,7 +15,7 @@ import com.aesthomic.readinglog.databinding.ItemListReadBinding
  * Adapter creates a View Holder and fills it with
  * data for the Recycler View to display
  */
-class ReadAdapter:
+class ReadAdapter(private val clickListener: ReadListener):
     ListAdapter<Read, ReadAdapter.ReadViewHolder>(ReadDiffCallback()) {
 
     /**
@@ -36,7 +36,7 @@ class ReadAdapter:
          */
         val read = getItem(position)
 
-        holder.bind(read)
+        holder.bind(read, clickListener)
     }
 
     /**
@@ -45,8 +45,9 @@ class ReadAdapter:
     class ReadViewHolder(private val binding: ItemListReadBinding):
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(read: Read) {
+        fun bind(read: Read, clickListener: ReadListener) {
             binding.read = read
+            binding.clickListener = clickListener
 
             /**
              * this call is an optimization that asks data binding

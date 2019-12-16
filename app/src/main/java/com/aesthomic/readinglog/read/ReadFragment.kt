@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -59,7 +60,10 @@ class ReadFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvRead.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = ReadAdapter()
+        val adapter = ReadAdapter(ReadListener {
+            Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show()
+        })
+
         binding.rvRead.adapter = adapter
 
         viewModel.reads.observe(this, Observer {
