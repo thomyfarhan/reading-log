@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.database.ReadingLogDatabase
@@ -26,6 +28,16 @@ class ReadDetailFragment : Fragment() {
             R.layout.fragment_read_detail, container, false)
 
         initViewModel()
+
+        viewModel.navigateToRead.observe(this, Observer {
+            if(it) {
+                this.findNavController().navigate(
+                    ReadDetailFragmentDirections.
+                        actionReadDetailDestinationToReadDestination()
+                )
+                viewModel.doneNavigateToRead()
+            }
+        })
 
         return binding.root
     }

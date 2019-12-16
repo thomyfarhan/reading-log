@@ -20,6 +20,10 @@ class ReadDetailViewModel (
     val read: LiveData<Read?>
         get() = _read
 
+    private val _navigateToRead = MutableLiveData<Boolean>()
+    val navigateToRead: LiveData<Boolean>
+        get() = _navigateToRead
+
     val title = Transformations.map(read) {
         it?.bookName
     }
@@ -54,6 +58,14 @@ class ReadDetailViewModel (
         return withContext(Dispatchers.IO) {
             database.get(key)
         }
+    }
+
+    fun eventNavigateToRead() {
+        _navigateToRead.value = true
+    }
+
+    fun doneNavigateToRead() {
+        _navigateToRead.value = false
     }
 
     override fun onCleared() {
