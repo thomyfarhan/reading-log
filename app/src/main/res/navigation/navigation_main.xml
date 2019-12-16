@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_read_destination_to_read_book_destination"
             app:destination="@id/read_book_destination" />
+        <action
+            android:id="@+id/action_read_destination_to_read_detail_destination"
+            app:destination="@id/read_detail_destination" />
     </fragment>
 
     <fragment
@@ -28,5 +31,20 @@
         <argument
             android:name="readKey"
             app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/read_detail_destination"
+        android:name="com.aesthomic.readinglog.readdetail.ReadDetailFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_read_detail">
+        <argument
+            android:name="readKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_read_detail_destination_to_read_destination"
+            app:destination="@id/read_destination"
+            app:popUpTo="@id/read_destination"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
