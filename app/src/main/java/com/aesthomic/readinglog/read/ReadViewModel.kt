@@ -24,6 +24,10 @@ class ReadViewModel(
     val navigateToReadBook: LiveData<Read?>
         get() = _navigateToReadBook
 
+    private val _navigateToDetail = MutableLiveData<Long?>()
+    val navigateToDetail: LiveData<Long?>
+        get() = _navigateToDetail
+
     val reads = database.getAllReads()
 
     val startVisibility = Transformations.map(currentRead) {
@@ -92,8 +96,16 @@ class ReadViewModel(
         }
     }
 
+    fun onReadClicked(key: Long) {
+        _navigateToDetail.value = key
+    }
+
     fun onNavigateReadBookDone() {
         _navigateToReadBook.value = null
+    }
+
+    fun onNavigateDetailDone() {
+        _navigateToDetail.value = null
     }
 
     override fun onCleared() {

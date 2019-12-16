@@ -45,6 +45,16 @@ class ReadFragment : Fragment() {
             }
         })
 
+        viewModel.navigateToDetail.observe(this, Observer {
+            it?.let {
+                this.findNavController().navigate(
+                    ReadFragmentDirections.
+                        actionReadDestinationToReadDetailDestination(it)
+                )
+                viewModel.onNavigateDetailDone()
+            }
+        })
+
         viewModel.deleteEnable.observe(this, Observer {
             if (it) {
                 binding.fabDelete.backgroundTintList = ColorStateList.valueOf(
@@ -61,7 +71,7 @@ class ReadFragment : Fragment() {
         binding.rvRead.layoutManager = LinearLayoutManager(requireContext())
 
         val adapter = ReadAdapter(ReadListener {
-            Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show()
+            viewModel.onReadClicked(it)
         })
 
         binding.rvRead.adapter = adapter
