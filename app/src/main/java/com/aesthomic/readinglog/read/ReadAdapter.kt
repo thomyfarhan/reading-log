@@ -81,3 +81,7 @@ class ReadDiffCallback: DiffUtil.ItemCallback<Read>() {
     }
 
 }
+
+class ReadListener(val clickListener: (readKey: Long) -> Unit) {
+    fun onClick(read: Read) = clickListener(read.id)
+}
