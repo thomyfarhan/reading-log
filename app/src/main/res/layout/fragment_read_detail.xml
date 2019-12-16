@@ -28,6 +28,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_detail_title_text"
             app:layout_constraintEnd_toEndOf="@id/tv_detail_title_text"
             app:layout_constraintTop_toBottomOf="@id/tv_detail_title_text"
+            android:text="@{viewModel.title}"
             tools:text="Lord of the Ring"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -45,6 +46,7 @@
             app:layout_constraintStart_toStartOf="@id/tv_detail_start_text"
             app:layout_constraintEnd_toEndOf="@id/tv_detail_start_text"
             app:layout_constraintTop_toBottomOf="@id/tv_detail_start_text"
+            android:text="@{viewModel.startTime}"
             tools:text="07 December 2019"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -62,6 +64,7 @@
             app:layout_constraintStart_toStartOf="@id/tv_detail_end_text"
             app:layout_constraintEnd_toEndOf="@id/tv_detail_end_text"
             app:layout_constraintTop_toBottomOf="@id/tv_detail_end_text"
+            android:text="@{viewModel.endTime}"
             tools:text="08 December 2019"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -79,6 +82,7 @@
             app:layout_constraintStart_toStartOf="@id/tv_detail_page_text"
             app:layout_constraintEnd_toEndOf="@id/tv_detail_page_text"
             app:layout_constraintTop_toBottomOf="@id/tv_detail_page_text"
+            android:text="@{viewModel.page}"
             tools:text="192"/>
 
         <androidx.appcompat.widget.AppCompatButton
