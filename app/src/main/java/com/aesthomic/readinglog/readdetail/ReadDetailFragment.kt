@@ -38,6 +38,9 @@ class ReadDetailFragment : Fragment() {
         val viewModelFactory = ReadDetailViewModelFactory(args.readKey, database)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ReadDetailViewModel::class.java)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
 
