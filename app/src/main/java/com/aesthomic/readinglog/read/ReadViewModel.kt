@@ -1,9 +1,11 @@
 package com.aesthomic.readinglog.read
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.database.ReadDao
 import kotlinx.coroutines.*
@@ -23,6 +25,18 @@ class ReadViewModel(
         get() = _navigateToReadBook
 
     val reads = database.getAllReads()
+
+    val startVisibility = Transformations.map(currentRead) {
+        if (it == null) View.VISIBLE else View.INVISIBLE
+    }
+
+    val stopVisibility = Transformations.map(currentRead) {
+        if (it != null) View.VISIBLE else View.INVISIBLE
+    }
+
+    val deleteEnable = Transformations.map(reads) {
+        it.isNotEmpty()
+    }
 
     init {
         initializeCurrentRead()
