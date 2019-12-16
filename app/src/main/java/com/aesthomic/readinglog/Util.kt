@@ -51,6 +51,12 @@ fun convertLongToDate(time: Long): String {
         .format(time).toString()
 }
 
+@SuppressLint("SimpleDateFormat")
+fun convertLongToFormat(time: Long): String {
+    return SimpleDateFormat("EEEE', 'dd MMMM yyyy' at 'HH:mm")
+        .format(time).toString()
+}
+
 fun String.pluralize(value: Long): String {
     return this.pluralize(value, null)
 }
