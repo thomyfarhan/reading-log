@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -52,6 +51,16 @@ class ReadFragment : Fragment() {
                         actionReadDestinationToReadDetailDestination(it)
                 )
                 viewModel.onNavigateDetailDone()
+            }
+        })
+
+        viewModel.fabVisibility.observe(this, Observer {
+            if (it) {
+                binding.fabStart.visibility = View.VISIBLE
+                binding.fabStop.visibility = View.INVISIBLE
+            } else {
+                binding.fabStart.visibility = View.INVISIBLE
+                binding.fabStop.visibility = View.VISIBLE
             }
         })
 
