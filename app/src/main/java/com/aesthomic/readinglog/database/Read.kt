@@ -2,9 +2,14 @@ package com.aesthomic.readinglog.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "read")
+@Entity(tableName = "read",
+    foreignKeys = [ForeignKey(entity = Book::class,
+        parentColumns = ["id"],
+        childColumns = ["book_id"],
+        onDelete = ForeignKey.CASCADE)])
 data class Read(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
@@ -15,9 +20,9 @@ data class Read(
     @ColumnInfo(name = "end_time_millis")
     var endTimeMillis: Long = startTimeMillis,
 
-    @ColumnInfo(name = "book_name")
-    var bookName: String = "",
+    @ColumnInfo(name = "last_page")
+    var lastPage: Int = 0,
 
-    @ColumnInfo(name = "chapter")
-    var chapter: Int = 0
+    @ColumnInfo(name = "book_id", index = true)
+    var bookId: Long? = null
 )
