@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.databinding.ItemListReadBinding
 import com.aesthomic.readinglog.databinding.ItemListReadEvenBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.ClassCastException
 
 private const val ITEM_VIEW_TYPE_ODD = 0
@@ -21,19 +25,26 @@ private const val ITEM_VIEW_TYPE_EVEN = 1
 class ReadAdapter(private val clickListener: ReadListener):
     ListAdapter<DataItem, RecyclerView.ViewHolder>(ReadDiffCallback()) {
 
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
     /**
      * Add list and group the list with the data item type
      * by adding conditial whether the read object is odd or even
      */
     fun addSubmitList(list: List<Read>) {
-        val items = list.map{
-            if (it.id % 2L == 0L) {
-                DataItem.ReadItemEven(it)
-            } else {
-                DataItem.ReadItemOdd(it)
+        adapterScope.launch {
+            val items = list.map{
+                if (it.id % 2L == 0L) {
+                    DataItem.ReadItemEven(it)
+                } else {
+                    DataItem.ReadItemOdd(it)
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                submitList(items)
             }
         }
-        submitList(items)
     }
 
     /**
