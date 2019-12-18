@@ -1,48 +1,84 @@
 package com.aesthomic.readinglog.read
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.aesthomic.readinglog.convertLongToDate
-import com.aesthomic.readinglog.convertLongToDuration
-import com.aesthomic.readinglog.convertLongToMonth
 import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.databinding.ItemListReadBinding
+import com.aesthomic.readinglog.databinding.ItemListReadEvenBinding
+import java.lang.ClassCastException
+
+private const val ITEM_VIEW_TYPE_ODD = 0
+private const val ITEM_VIEW_TYPE_EVEN = 1
 
 /**
  * Adapter creates a View Holder and fills it with
  * data for the Recycler View to display
  */
 class ReadAdapter(private val clickListener: ReadListener):
-    ListAdapter<Read, ReadAdapter.ReadViewHolder>(ReadDiffCallback()) {
+    ListAdapter<DataItem, RecyclerView.ViewHolder>(ReadDiffCallback()) {
+
+    /**
+     * Add list and group the list with the data item type
+     * by adding conditial whether the read object is odd or even
+     */
+    fun addSubmitList(list: List<Read>) {
+        val items = list.map{
+            if (it.id % 2L == 0L) {
+                DataItem.ReadItemEven(it)
+            } else {
+                DataItem.ReadItemOdd(it)
+            }
+        }
+        submitList(items)
+    }
+
+    /**
+     * Return the view type based on DataItem type
+     */
+    override fun getItemViewType(position: Int): Int {
+        return when(getItem(position)) {
+            is DataItem.ReadItemOdd -> ITEM_VIEW_TYPE_ODD
+            is DataItem.ReadItemEven -> ITEM_VIEW_TYPE_EVEN
+        }
+    }
 
     /**
      * Create the view by inflating layout
      * and return the view as ViewHolder
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReadViewHolder {
-        return ReadViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ITEM_VIEW_TYPE_ODD -> ReadOddViewHolder.from(parent)
+            ITEM_VIEW_TYPE_EVEN -> ReadEvenViewHolder.from(parent)
+            else -> throw ClassCastException("Unknown viewType $viewType")
+        }
     }
 
     /**
      * Bind the view that we already create on onCreateViewHolder function
      * every items in the list need to run this function
      */
-    override fun onBindViewHolder(holder: ReadViewHolder, position: Int) {
-        /**
-         * same as getItemCount function
-         */
-        val read = getItem(position)
-
-        holder.bind(read, clickListener)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(holder) {
+            is ReadOddViewHolder -> {
+                val readItem = getItem(position) as DataItem.ReadItemOdd
+                holder.bind(readItem.read, clickListener)
+            }
+            is ReadEvenViewHolder -> {
+                val readItem = getItem(position) as DataItem.ReadItemEven
+                holder.bind(readItem.read, clickListener)
+            }
+        }
     }
 
     /**
      * Layout for the items to be displayed inside the RecyclerView
      */
-    class ReadViewHolder(private val binding: ItemListReadBinding):
+    class ReadOddViewHolder(private val binding: ItemListReadBinding):
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(read: Read, clickListener: ReadListener) {
@@ -57,12 +93,36 @@ class ReadAdapter(private val clickListener: ReadListener):
         }
 
         companion object {
-            fun from(parent: ViewGroup): ReadViewHolder {
+            fun from(parent: ViewGroup): ReadOddViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemListReadBinding.inflate(
                     layoutInflater, parent, false)
 
-                return ReadViewHolder(binding)
+                return ReadOddViewHolder(binding)
+            }
+        }
+    }
+
+    /**
+     * The second view holder for even data type
+     */
+    class ReadEvenViewHolder(private val binding: ItemListReadEvenBinding):
+            RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(read: Read, clickListener: ReadListener) {
+            binding.read = read
+            binding.clickListener = clickListener
+
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ReadEvenViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemListReadEvenBinding.inflate(
+                    layoutInflater, parent, false)
+
+                return ReadEvenViewHolder(binding)
             }
         }
     }
@@ -72,12 +132,13 @@ class ReadAdapter(private val clickListener: ReadListener):
  * Use DiffUtil to optimize RecyclerView
  * when data has been changed
  */
-class ReadDiffCallback: DiffUtil.ItemCallback<Read>() {
-    override fun areItemsTheSame(oldItem: Read, newItem: Read): Boolean {
+class ReadDiffCallback: DiffUtil.ItemCallback<DataItem>() {
+    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Read, newItem: Read): Boolean {
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem == newItem
     }
 
@@ -85,4 +146,18 @@ class ReadDiffCallback: DiffUtil.ItemCallback<Read>() {
 
 class ReadListener(val clickListener: (readKey: Long) -> Unit) {
     fun onClick(read: Read) = clickListener(read.id)
+}
+
+/**
+ * Data Item contain the type of the item
+ */
+sealed class DataItem {
+    abstract val id: Long
+    data class ReadItemOdd(val read: Read): DataItem() {
+        override val id: Long = read.id
+    }
+
+    data class ReadItemEven(val read: Read): DataItem() {
+        override val id: Long = read.id
+    }
 }

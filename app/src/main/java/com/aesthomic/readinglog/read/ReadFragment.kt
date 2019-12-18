@@ -87,7 +87,7 @@ class ReadFragment : Fragment() {
 
         viewModel.reads.observe(this, Observer {
             it?.let {
-                adapter.submitList(it)
+                adapter.addSubmitList(it)
             }
         })
     }
