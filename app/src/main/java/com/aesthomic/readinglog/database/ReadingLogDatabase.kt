@@ -25,6 +25,7 @@ abstract class ReadingLogDatabase: RoomDatabase() {
                         context,
                         ReadingLogDatabase::class.java,
                         "reading_log_database")
+                        .addMigrations(MIGRATION_1_2)
                         .build()
 
                     INSTANCE = instance
