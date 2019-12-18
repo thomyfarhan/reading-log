@@ -24,10 +24,6 @@ class ReadDetailViewModel (
     val navigateToRead: LiveData<Boolean>
         get() = _navigateToRead
 
-    val title = Transformations.map(read) {
-        it?.bookName
-    }
-
     val startTime = Transformations.map(read) {
         it?.let {
             convertLongToFormat(it.startTimeMillis)
@@ -38,10 +34,6 @@ class ReadDetailViewModel (
         it?.let {
             convertLongToFormat(it.endTimeMillis)
         }
-    }
-
-    val page = Transformations.map(read) {
-        it?.chapter?.toString()
     }
 
     init {

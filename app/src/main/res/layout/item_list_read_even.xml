@@ -58,7 +58,6 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:textSize="20sp"
-            android:text="@{read.bookName}"
             tools:text="The Lord of The Ring The Lord of The Ring" />
 
         <TextView

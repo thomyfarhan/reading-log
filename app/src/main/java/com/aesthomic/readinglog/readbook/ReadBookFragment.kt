@@ -36,9 +36,7 @@ class ReadBookFragment : Fragment() {
 
         viewModel.eventSubmit.observe(this, Observer {
             if (it) {
-                val bookName = binding.etReadbookTitle.text.toString()
-                val page = binding.etReadbookPage.text.toString().toInt()
-                viewModel.updateRead(time, bookName, page)
+                viewModel.updateRead(time)
                 viewModel.onSubmitDone()
 
                 this.findNavController().navigate(

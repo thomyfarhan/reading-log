@@ -18,13 +18,11 @@ class ReadBookViewModel (
     val eventSubmit: LiveData<Boolean>
         get() = _eventSubmit
 
-    fun updateRead(time: Long, bookName: String, page: Int) {
+    fun updateRead(time: Long) {
         uiScope.launch {
             withContext(Dispatchers.IO) {
                 val read = database.get(readKey) ?: return@withContext
                 read.endTimeMillis = time
-                read.bookName = bookName
-                read.chapter = page
                 database.update(read)
             }
         }
