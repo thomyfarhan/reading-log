@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="read"
+            type="com.aesthomic.readinglog.database.Read" />
+
+        <variable
+            name="clickListener"
+            type="com.aesthomic.readinglog.read.ReadListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryLight"
+        android:onClick="@{() -> clickListener.onClick(read)}">
+
+        <TextView
+            android:id="@+id/tv_list_read_even_month"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_list_read_even_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_list_read_even_middle"
+            app:layout_constraintTop_toTopOf="@id/gl_list_read_even_top"
+            app:readMonthFormatted="@{read}"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:text="SEP" />
+
+        <TextView
+            android:id="@+id/tv_list_read_even_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tv_list_read_even_month"
+            app:layout_constraintEnd_toEndOf="@id/tv_list_read_even_month"
+            app:layout_constraintTop_toBottomOf="@+id/tv_list_read_even_month"
+            app:readDateFormatted="@{read}"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="12" />
+
+        <TextView
+            android:id="@+id/tv_list_read_even_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toStartOf="@id/gl_list_read_even_middle"
+            app:layout_constraintEnd_toEndOf="@id/gl_list_read_even_end"
+            app:layout_constraintTop_toTopOf="@id/tv_list_read_even_month"
+            app:layout_constraintBottom_toTopOf="@id/tv_list_read_even_time"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="20sp"
+            android:text="@{read.bookName}"
+            tools:text="The Lord of The Ring The Lord of The Ring" />
+
+        <TextView
+            android:id="@+id/tv_list_read_even_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_list_read_even_title"
+            app:layout_constraintStart_toStartOf="@id/tv_list_read_even_title"
+            app:layout_constraintEnd_toEndOf="@id/tv_list_read_even_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_list_read_even_date"
+            app:readDurationFormatted="@{read}"
+            android:textStyle="italic"
+            tools:text="1 Hour 27 Minutes" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_list_read_even_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="100dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_list_read_even_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="8dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_list_read_even_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="8dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_list_read_even_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="8dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_list_read_even_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="8dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
