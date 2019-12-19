@@ -9,6 +9,7 @@ import androidx.room.RoomDatabase
 abstract class ReadingLogDatabase: RoomDatabase() {
 
     abstract val readDao: ReadDao
+    abstract val bookDao: BookDao
 
     companion object {
 
