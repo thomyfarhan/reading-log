@@ -8,7 +8,7 @@ import kotlinx.coroutines.*
 
 class ReadBookViewModel (
     private val readKey: Long,
-    private val database: ReadDao): ViewModel() {
+    private val dbRead: ReadDao): ViewModel() {
 
     private val viewModelJob = Job()
 
@@ -21,9 +21,9 @@ class ReadBookViewModel (
     fun updateRead(time: Long) {
         uiScope.launch {
             withContext(Dispatchers.IO) {
-                val read = database.get(readKey) ?: return@withContext
+                val read = dbRead.get(readKey) ?: return@withContext
                 read.endTimeMillis = time
-                database.update(read)
+                dbRead.update(read)
             }
         }
     }

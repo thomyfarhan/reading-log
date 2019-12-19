@@ -48,12 +48,14 @@ class ReadBookFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val application = requireNotNull(this.activity).application
-        val database = ReadingLogDatabase.getInstance(application).readDao
         val readKey = ReadBookFragmentArgs.fromBundle(requireArguments()).readKey
+        val application = requireNotNull(this.activity).application
+
+        val database = ReadingLogDatabase.getInstance(application)
+        val dbRead = database.readDao
 
         val viewModelFactory = ReadBookViewModelFactory(
-            readKey, database)
+            readKey, dbRead)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ReadBookViewModel::class.java)
     }

@@ -7,12 +7,12 @@ import java.lang.IllegalArgumentException
 
 class ReadBookViewModelFactory(
     private val readKey: Long,
-    private val database: ReadDao): ViewModelProvider.Factory {
+    private val dbRead: ReadDao): ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(ReadBookViewModel::class.java)) {
-            return ReadBookViewModel(readKey, database) as T
+            return ReadBookViewModel(readKey, dbRead) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
     }
