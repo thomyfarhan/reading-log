@@ -3,12 +3,14 @@ package com.aesthomic.readinglog.readbook
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.aesthomic.readinglog.database.BookDao
 import com.aesthomic.readinglog.database.ReadDao
 import kotlinx.coroutines.*
 
 class ReadBookViewModel (
     private val readKey: Long,
-    private val dbRead: ReadDao): ViewModel() {
+    private val dbRead: ReadDao,
+    private val dbBook: BookDao): ViewModel() {
 
     private val viewModelJob = Job()
 

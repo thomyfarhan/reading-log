@@ -53,9 +53,10 @@ class ReadBookFragment : Fragment() {
 
         val database = ReadingLogDatabase.getInstance(application)
         val dbRead = database.readDao
+        val dbBook = database.bookDao
 
         val viewModelFactory = ReadBookViewModelFactory(
-            readKey, dbRead)
+            readKey, dbRead, dbBook)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ReadBookViewModel::class.java)
     }
