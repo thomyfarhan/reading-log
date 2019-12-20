@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_list_book_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/gl_list_book_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_list_book_end"
+        app:layout_constraintTop_toTopOf="@id/gl_list_book_top"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        tools:text="The Lord of the Ring The Lord of the Ring The Lord of the Ring "/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tv_list_book_title"
+        app:layout_constraintEnd_toEndOf="@id/tv_list_book_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_list_book_title"
+        app:layout_constraintBottom_toBottomOf="@id/gl_list_book_bottom"
+        android:textSize="12sp"
+        tools:text="425 Pages"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_list_book_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/horizontal_margin"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_list_book_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/horizontal_margin"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_list_book_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/horizontal_margin"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_list_book_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/horizontal_margin"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
