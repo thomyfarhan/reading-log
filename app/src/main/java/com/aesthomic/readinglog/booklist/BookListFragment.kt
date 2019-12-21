@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.database.ReadingLogDatabase
@@ -26,8 +28,22 @@ class BookListFragment : Fragment() {
             R.layout.fragment_book_list, container, false)
 
         initViewModel()
+        initRecyclerView()
 
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+        binding.rvBookList.layoutManager = LinearLayoutManager(requireContext())
+
+        val adapter = BookListAdapter()
+        binding.rvBookList.adapter = adapter
+
+        viewModel.books.observe(this, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
     }
 
     private fun initViewModel() {
