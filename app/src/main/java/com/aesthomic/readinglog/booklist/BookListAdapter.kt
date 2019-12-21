@@ -1,14 +1,12 @@
 package com.aesthomic.readinglog.booklist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.database.Book
-import kotlinx.android.synthetic.main.item_list_book.view.*
+import com.aesthomic.readinglog.databinding.ItemListBookBinding
 
 class BookListAdapter:
     ListAdapter<Book,BookListAdapter.BookListViewHolder>(BookListCallback()) {
@@ -21,21 +19,20 @@ class BookListAdapter:
         holder.bind(getItem(position))
     }
 
-    class BookListViewHolder(private val view: View):
-        RecyclerView.ViewHolder(view) {
+    class BookListViewHolder(private val binding: ItemListBookBinding):
+        RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             fun from(parent: ViewGroup): BookListViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.item_list_book, parent, false)
+                val binding = ItemListBookBinding.inflate(inflater, parent, false)
 
-                return BookListViewHolder(view)
+                return BookListViewHolder(binding)
             }
         }
 
         fun bind(book: Book) {
-            view.tv_list_book_title.text = book.title
-            view.tv_list_book_page.text = book.page.toString()
+            binding.book = book
         }
     }
 }
