@@ -75,18 +75,18 @@
                 app:layout_constraintStart_toStartOf="@id/et_botsheet_read_book_title"
                 app:layout_constraintTop_toBottomOf="@id/et_botsheet_read_book_title"
                 app:layout_constraintBottom_toBottomOf="@id/gl_botsheet_read_book_bottom"
+                android:inputType="number"
                 android:textSize="15sp"
                 android:hint="@string/page" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_botsheet_read_book_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="@id/et_botsheet_read_book_title"
                 app:layout_constraintBottom_toBottomOf="@id/et_botsheet_read_book_page"
+                android:onClick="@{() -> viewModel.onEventBookSubmit()}"
                 android:textSize="15sp"
-                android:textColor="@android:color/white"
                 android:text="@string/submit" />
 
             <androidx.constraintlayout.widget.Guideline

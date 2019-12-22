@@ -3,6 +3,7 @@ package com.aesthomic.readinglog.readbook
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.aesthomic.readinglog.database.Book
 import com.aesthomic.readinglog.database.BookDao
 import com.aesthomic.readinglog.database.ReadDao
 import kotlinx.coroutines.*
@@ -24,6 +25,10 @@ class ReadBookViewModel (
     val eventCamera: LiveData<Boolean>
         get() = _eventCamera
 
+    private val _eventBookSubmit = MutableLiveData<Boolean>()
+    val eventBookSubmit: LiveData<Boolean>
+        get() = _eventBookSubmit
+
     fun updateRead(time: Long) {
         uiScope.launch {
             withContext(Dispatchers.IO) {
@@ -31,6 +36,19 @@ class ReadBookViewModel (
                 read.endTimeMillis = time
                 dbRead.update(read)
             }
+        }
+    }
+
+    fun addBook(photo: String, title: String, page: Int) {
+        uiScope.launch {
+            val book = Book(photo = photo, title = title, page = page)
+            insert(book)
+        }
+    }
+
+    private suspend fun insert(book: Book) {
+        withContext(Dispatchers.IO) {
+            dbBook.insert(book)
         }
     }
 
@@ -48,6 +66,14 @@ class ReadBookViewModel (
 
     fun onCameraDone() {
         _eventCamera.value = false
+    }
+
+    fun onEventBookSubmit() {
+        _eventBookSubmit.value = true
+    }
+
+    fun onBookSubmitDone() {
+        _eventBookSubmit.value = false
     }
 
     override fun onCleared() {
