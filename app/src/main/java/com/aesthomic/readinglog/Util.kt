@@ -3,6 +3,7 @@ package com.aesthomic.readinglog
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 private val ONE_MINUTE_MILLI = TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES)
@@ -55,6 +56,11 @@ fun convertLongToDate(time: Long): String {
 fun convertLongToFormat(time: Long): String {
     return SimpleDateFormat("EEEE', 'dd MMMM yyyy' at 'HH:mm")
         .format(time).toString()
+}
+
+fun getTime(): String {
+    return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        .format(Date())
 }
 
 fun String.pluralize(value: Long): String {
