@@ -20,6 +20,10 @@ class ReadBookViewModel (
     val eventSubmit: LiveData<Boolean>
         get() = _eventSubmit
 
+    private val _eventCamera = MutableLiveData<Boolean>()
+    val eventCamera: LiveData<Boolean>
+        get() = _eventCamera
+
     fun updateRead(time: Long) {
         uiScope.launch {
             withContext(Dispatchers.IO) {
@@ -36,6 +40,14 @@ class ReadBookViewModel (
 
     fun onSubmitDone() {
         _eventSubmit.value = false
+    }
+
+    fun onEventCamera() {
+        _eventCamera.value = true
+    }
+
+    fun onCameraDone() {
+        _eventCamera.value = false
     }
 
     override fun onCleared() {
