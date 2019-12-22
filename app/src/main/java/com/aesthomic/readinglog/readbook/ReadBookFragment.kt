@@ -34,6 +34,7 @@ class ReadBookFragment : Fragment() {
     private lateinit var binding: FragmentReadBookBinding
     private lateinit var viewModel: ReadBookViewModel
     private lateinit var picturePath: String
+    private lateinit var imgFile: File
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +64,16 @@ class ReadBookFragment : Fragment() {
             if (it) {
                 openCameraIntent()
                 viewModel.onCameraDone()
+            }
+        })
+
+        viewModel.eventBookSubmit.observe(this, Observer {
+            if (it) {
+                val photo = Uri.fromFile(imgFile).toString()
+                val title = binding.bottomSheet.etBotsheetReadBookTitle.text.toString()
+                val page = binding.bottomSheet.etBotsheetReadBookPage.text.toString().toInt()
+                viewModel.addBook(photo, title, page)
+                viewModel.onBookSubmitDone()
             }
         })
 
@@ -111,7 +122,7 @@ class ReadBookFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CAPTURE_IMAGE) {
-            val imgFile = File(picturePath)
+            imgFile = File(picturePath)
             if (resultCode == RESULT_OK) {
                 binding.bottomSheet.ivBotsheetReadBookPhoto.setImageURI(
                     Uri.fromFile(imgFile))
