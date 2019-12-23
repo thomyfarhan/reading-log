@@ -26,12 +26,9 @@ class ReadBookViewModel (
     val eventCamera: LiveData<Boolean>
         get() = _eventCamera
 
-    private val _eventBookSubmit = MutableLiveData<Boolean>()
-    val eventBookSubmit: LiveData<Boolean>
-        get() = _eventBookSubmit
-
     val titleText = MutableLiveData<String>()
     val pageText = MutableLiveData<String>()
+    val photoUri = MutableLiveData<String>()
     val titlePageMediator = MediatorLiveData<Boolean>()
 
     init {
@@ -56,9 +53,11 @@ class ReadBookViewModel (
         }
     }
 
-    fun addBook(photo: String, title: String, page: Int) {
+    fun addBook() {
         uiScope.launch {
-            val book = Book(photo = photo, title = title, page = page)
+            val book = Book(photo = photoUri.value ?: "",
+                title = titleText.value ?: "",
+                page = pageText.value?.toInt() ?: 0)
             insert(book)
         }
     }
@@ -83,14 +82,6 @@ class ReadBookViewModel (
 
     fun onCameraDone() {
         _eventCamera.value = false
-    }
-
-    fun onEventBookSubmit() {
-        _eventBookSubmit.value = true
-    }
-
-    fun onBookSubmitDone() {
-        _eventBookSubmit.value = false
     }
 
     override fun onCleared() {

@@ -67,16 +67,6 @@ class ReadBookFragment : Fragment() {
             }
         })
 
-        viewModel.eventBookSubmit.observe(this, Observer {
-            if (it) {
-                val photo = Uri.fromFile(imgFile).toString()
-                val title = binding.bottomSheet.etBotsheetReadBookTitle.text.toString()
-                val page = binding.bottomSheet.etBotsheetReadBookPage.text.toString().toInt()
-                viewModel.addBook(photo, title, page)
-                viewModel.onBookSubmitDone()
-            }
-        })
-
         return binding.root
     }
 
@@ -126,6 +116,7 @@ class ReadBookFragment : Fragment() {
             if (resultCode == RESULT_OK) {
                 binding.bottomSheet.ivBotsheetReadBookPhoto.setImageURI(
                     Uri.fromFile(imgFile))
+                viewModel.photoUri.value = Uri.fromFile(imgFile).toString()
             } else {
                 imgFile.delete()
                 return

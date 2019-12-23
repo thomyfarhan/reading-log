@@ -88,7 +88,7 @@
                 app:layout_constraintEnd_toEndOf="@id/et_botsheet_read_book_title"
                 app:layout_constraintBottom_toBottomOf="@id/et_botsheet_read_book_page"
                 android:enabled="@{viewModel.titlePageMediator}"
-                android:onClick="@{() -> viewModel.onEventBookSubmit()}"
+                android:onClick="@{() -> viewModel.addBook()}"
                 android:textSize="15sp"
                 android:text="@string/submit" />
 
