@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -22,6 +23,7 @@ import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.database.ReadingLogDatabase
 import com.aesthomic.readinglog.databinding.FragmentReadBookBinding
 import com.aesthomic.readinglog.getTime
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.io.File
 import java.io.IOException
 
@@ -35,6 +37,7 @@ class ReadBookFragment : Fragment() {
     private lateinit var viewModel: ReadBookViewModel
     private lateinit var picturePath: String
     private lateinit var imgFile: File
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +50,8 @@ class ReadBookFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        setupBottomSheetBehavior()
 
         val time = System.currentTimeMillis()
 
@@ -68,6 +73,25 @@ class ReadBookFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    } else {
+                        findNavController().popBackStack(R.id.read_destination, false)
+                    }
+                }
+            })
+    }
+
+    private fun setupBottomSheetBehavior() {
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet.botsheetReadBook)
     }
 
     private fun initViewModel() {
