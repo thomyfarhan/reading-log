@@ -66,6 +66,7 @@
                 app:layout_constraintTop_toBottomOf="@id/iv_botsheet_read_book_photo"
                 app:layout_constraintBottom_toTopOf="@id/et_botsheet_read_book_page"
                 android:textSize="15sp"
+                android:text="@={viewModel.titleText}"
                 android:hint="@string/book_title" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -77,6 +78,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/gl_botsheet_read_book_bottom"
                 android:inputType="number"
                 android:textSize="15sp"
+                android:text="@={viewModel.pageText}"
                 android:hint="@string/page" />
 
             <com.google.android.material.button.MaterialButton
@@ -85,6 +87,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="@id/et_botsheet_read_book_title"
                 app:layout_constraintBottom_toBottomOf="@id/et_botsheet_read_book_page"
+                android:enabled="@{viewModel.titlePageMediator}"
                 android:onClick="@{() -> viewModel.onEventBookSubmit()}"
                 android:textSize="15sp"
                 android:text="@string/submit" />

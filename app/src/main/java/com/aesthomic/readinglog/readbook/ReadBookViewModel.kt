@@ -1,6 +1,7 @@
 package com.aesthomic.readinglog.readbook
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aesthomic.readinglog.database.Book
@@ -28,6 +29,22 @@ class ReadBookViewModel (
     private val _eventBookSubmit = MutableLiveData<Boolean>()
     val eventBookSubmit: LiveData<Boolean>
         get() = _eventBookSubmit
+
+    val titleText = MutableLiveData<String>()
+    val pageText = MutableLiveData<String>()
+    val titlePageMediator = MediatorLiveData<Boolean>()
+
+    init {
+        titlePageMediator.apply {
+            addSource(titleText) {checkTitlePage()}
+            addSource(pageText) {checkTitlePage()}
+        }
+    }
+
+    private fun checkTitlePage() {
+        titlePageMediator.value = titleText.value?.isNotBlank() ?: false
+                && pageText.value?.isNotBlank() ?: false
+    }
 
     fun updateRead(time: Long) {
         uiScope.launch {
@@ -79,5 +96,10 @@ class ReadBookViewModel (
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+
+        titlePageMediator.apply {
+            removeSource(titleText)
+            removeSource(pageText)
+        }
     }
 }
