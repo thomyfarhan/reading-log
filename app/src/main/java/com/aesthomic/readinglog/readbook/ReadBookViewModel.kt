@@ -22,9 +22,9 @@ class ReadBookViewModel (
     val eventSubmit: LiveData<Boolean>
         get() = _eventSubmit
 
-    private val _eventCamera = MutableLiveData<Boolean>()
-    val eventCamera: LiveData<Boolean>
-        get() = _eventCamera
+    private val _eventImage = MutableLiveData<Boolean>()
+    val eventImage: LiveData<Boolean>
+        get() = _eventImage
 
     val titleText = MutableLiveData<String>()
     val pageText = MutableLiveData<String>()
@@ -76,12 +76,12 @@ class ReadBookViewModel (
         _eventSubmit.value = false
     }
 
-    fun onEventCamera() {
-        _eventCamera.value = true
+    fun onEventImage() {
+        _eventImage.value = true
     }
 
-    fun onCameraDone() {
-        _eventCamera.value = false
+    fun onImageDone() {
+        _eventImage.value = false
     }
 
     override fun onCleared() {

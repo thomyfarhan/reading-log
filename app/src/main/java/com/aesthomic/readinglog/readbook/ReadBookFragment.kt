@@ -65,10 +65,10 @@ class ReadBookFragment : Fragment() {
             }
         })
 
-        viewModel.eventCamera.observe(this, Observer {
+        viewModel.eventImage.observe(this, Observer {
             if (it) {
-                openCameraIntent()
-                viewModel.onCameraDone()
+                this.findNavController().navigate(R.id.book_picture_dialog)
+                viewModel.onImageDone()
             }
         })
 

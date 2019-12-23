@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="@id/tv_botsheet_read_book_head"
                 app:layout_constraintEnd_toEndOf="@id/tv_botsheet_read_book_head"
                 app:layout_constraintBottom_toTopOf="@id/et_botsheet_read_book_title"
-                android:onClick="@{() -> viewModel.onEventCamera()}"
+                android:onClick="@{() -> viewModel.onEventImage()}"
                 android:src="@drawable/ic_photo" />
 
             <com.google.android.material.textfield.TextInputEditText
