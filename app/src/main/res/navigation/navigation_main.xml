@@ -62,4 +62,10 @@
             app:popUpTo="@id/read_book_destination"
             app:popUpToInclusive="true"/>
     </fragment>
+
+    <dialog
+        android:id="@+id/book_picture_dialog"
+        android:name="com.aesthomic.readinglog.readbook.BookPictureDialogFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_book_picture_dialog"/>
 </navigation>
