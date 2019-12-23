@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.databinding.FragmentBookPictureDialogBinding
 
-class BookPictureDialogFragment : Fragment() {
+class BookPictureDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentBookPictureDialogBinding
 

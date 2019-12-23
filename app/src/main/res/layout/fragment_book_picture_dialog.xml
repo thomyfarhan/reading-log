@@ -8,5 +8,29 @@
         android:layout_height="wrap_content"
         tools:context=".readbook.BookPictureDialogFragment">
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_bookpic_dialog_album"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_margin="@dimen/horizontal_margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_photo_album"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_bookpic_dialog_camera"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="@dimen/horizontal_margin"
+            app:layout_constraintTop_toTopOf="@id/btn_bookpic_dialog_album"
+            app:layout_constraintBottom_toBottomOf="@id/btn_bookpic_dialog_album"
+            app:layout_constraintStart_toEndOf="@id/btn_bookpic_dialog_album"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_camera"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
