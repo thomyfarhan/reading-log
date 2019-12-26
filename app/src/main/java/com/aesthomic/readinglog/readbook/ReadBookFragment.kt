@@ -30,6 +30,7 @@ class ReadBookFragment : Fragment() {
 
     companion object {
         private const val REQUEST_CAPTURE_IMAGE = 100
+        private const val REQUEST_PICK_IMAGE = 101
     }
 
     private lateinit var binding: FragmentReadBookBinding
@@ -80,6 +81,7 @@ class ReadBookFragment : Fragment() {
 
         viewModel.eventGallery.observe(this, Observer {
             if (it) {
+                openAlbumIntent()
                 viewModel.onGalleryDone()
             }
         })
@@ -128,6 +130,14 @@ class ReadBookFragment : Fragment() {
                 pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE)
             }
+        }
+    }
+
+    private fun openAlbumIntent() {
+        val albumIntent = Intent(Intent.ACTION_PICK)
+        if (albumIntent.resolveActivity(requireActivity().packageManager) != null) {
+            albumIntent.setType("image/*")
+            startActivityForResult(albumIntent, REQUEST_PICK_IMAGE)
         }
     }
 
