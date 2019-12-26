@@ -16,14 +16,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
-import com.aesthomic.readinglog.database.ReadingLogDatabase
 import com.aesthomic.readinglog.databinding.FragmentReadBookBinding
 import com.aesthomic.readinglog.getTime
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.io.File
 import java.io.IOException
 
@@ -34,10 +34,12 @@ class ReadBookFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentReadBookBinding
-    private lateinit var viewModel: ReadBookViewModel
     private lateinit var picturePath: String
     private lateinit var imgFile: File
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+
+    private var readKey = 0L
+    private val viewModel: ReadBookViewModel by viewModel { parametersOf(readKey) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +48,7 @@ class ReadBookFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_read_book, container, false)
 
-        initViewModel()
-
+        readKey = ReadBookFragmentArgs.fromBundle(requireArguments()).readKey
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -92,20 +93,6 @@ class ReadBookFragment : Fragment() {
 
     private fun setupBottomSheetBehavior() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet.botsheetReadBook)
-    }
-
-    private fun initViewModel() {
-        val readKey = ReadBookFragmentArgs.fromBundle(requireArguments()).readKey
-        val application = requireNotNull(this.activity).application
-
-        val database = ReadingLogDatabase.getInstance(application)
-        val dbRead = database.readDao
-        val dbBook = database.bookDao
-
-        val viewModelFactory = ReadBookViewModelFactory(
-            readKey, dbRead, dbBook)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(ReadBookViewModel::class.java)
     }
 
     private fun openCameraIntent() {
