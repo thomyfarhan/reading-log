@@ -30,6 +30,10 @@ class ReadBookViewModel (
     val eventCamera: LiveData<Boolean>
         get() = _eventCamera
 
+    private val _eventGallery = MutableLiveData<Boolean>()
+    val eventGallery: LiveData<Boolean>
+        get() = _eventGallery
+
     val titleText = MutableLiveData<String>()
     val pageText = MutableLiveData<String>()
     val photoUri = MutableLiveData<String>()
@@ -94,6 +98,14 @@ class ReadBookViewModel (
 
     fun onCameraDone() {
         _eventCamera.value = false
+    }
+
+    fun onEventGallery() {
+        _eventGallery.value = true
+    }
+
+    fun onGalleryDone() {
+        _eventGallery.value = false
     }
 
     override fun onCleared() {

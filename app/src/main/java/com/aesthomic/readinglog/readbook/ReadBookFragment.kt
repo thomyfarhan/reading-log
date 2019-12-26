@@ -80,6 +80,12 @@ class ReadBookFragment : Fragment() {
             }
         })
 
+        viewModel.eventGallery.observe(this, Observer {
+            if (it) {
+                viewModel.onGalleryDone()
+            }
+        })
+
         return binding.root
     }
 
