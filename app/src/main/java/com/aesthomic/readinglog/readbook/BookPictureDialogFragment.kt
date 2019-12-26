@@ -34,5 +34,10 @@ class BookPictureDialogFragment : DialogFragment() {
             viewModel.onEventCamera()
             dismiss()
         }
+
+        binding.btnBookpicDialogAlbum.setOnClickListener {
+            viewModel.onEventGallery()
+            dismiss()
+        }
     }
 }
