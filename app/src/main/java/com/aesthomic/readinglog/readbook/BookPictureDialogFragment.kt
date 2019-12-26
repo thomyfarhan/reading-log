@@ -2,7 +2,6 @@ package com.aesthomic.readinglog.readbook
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,12 @@ import androidx.fragment.app.DialogFragment
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.databinding.FragmentBookPictureDialogBinding
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class BookPictureDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentBookPictureDialogBinding
+    private val viewModel: ReadBookViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,5 +27,12 @@ class BookPictureDialogFragment : DialogFragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        binding.btnBookpicDialogCamera.setOnClickListener {
+            viewModel.onEventCamera()
+            dismiss()
+        }
+    }
 }
