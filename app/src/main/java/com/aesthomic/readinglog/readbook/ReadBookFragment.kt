@@ -73,6 +73,13 @@ class ReadBookFragment : Fragment() {
             }
         })
 
+        viewModel.eventCamera.observe(this, Observer {
+            if (it) {
+                openCameraIntent()
+                viewModel.onCameraDone()
+            }
+        })
+
         return binding.root
     }
 

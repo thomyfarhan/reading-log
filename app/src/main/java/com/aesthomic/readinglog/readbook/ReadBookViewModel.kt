@@ -10,7 +10,7 @@ import com.aesthomic.readinglog.database.ReadDao
 import kotlinx.coroutines.*
 
 class ReadBookViewModel (
-    private val readKey: Long,
+    val readKey: Long,
     private val dbRead: ReadDao,
     private val dbBook: BookDao): ViewModel() {
 
@@ -25,6 +25,10 @@ class ReadBookViewModel (
     private val _eventImage = MutableLiveData<Boolean>()
     val eventImage: LiveData<Boolean>
         get() = _eventImage
+
+    private val _eventCamera = MutableLiveData<Boolean>()
+    val eventCamera: LiveData<Boolean>
+        get() = _eventCamera
 
     val titleText = MutableLiveData<String>()
     val pageText = MutableLiveData<String>()
@@ -82,6 +86,14 @@ class ReadBookViewModel (
 
     fun onImageDone() {
         _eventImage.value = false
+    }
+
+    fun onEventCamera() {
+        _eventCamera.value = true
+    }
+
+    fun onCameraDone() {
+        _eventCamera.value = false
     }
 
     override fun onCleared() {
