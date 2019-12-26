@@ -5,7 +5,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,8 +18,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
+import com.aesthomic.readinglog.createImageFile
 import com.aesthomic.readinglog.databinding.FragmentReadBookBinding
-import com.aesthomic.readinglog.getTime
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -35,7 +34,6 @@ class ReadBookFragment : Fragment() {
 
     private lateinit var binding: FragmentReadBookBinding
     private lateinit var picturePath: String
-    private lateinit var imgFile: File
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     private var readKey = 0L
@@ -114,7 +112,7 @@ class ReadBookFragment : Fragment() {
 
             val pictureFile: File?
             try {
-                pictureFile = createImageFile()
+                pictureFile = createImageFile(requireActivity())
             } catch (ex: IOException) {
                 Toast.makeText(requireContext(),
                     getString(R.string.fail_create_file_text),
@@ -123,6 +121,7 @@ class ReadBookFragment : Fragment() {
             }
 
             pictureFile.let {
+                picturePath = pictureFile.absolutePath
                 val photoUri = FileProvider.getUriForFile(requireContext(),
                     getString(R.string.application_id),
                     pictureFile)
@@ -136,11 +135,11 @@ class ReadBookFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CAPTURE_IMAGE) {
-            imgFile = File(picturePath)
+            val imgFile = File(picturePath)
             if (resultCode == RESULT_OK) {
-                binding.bottomSheet.ivBotsheetReadBookPhoto.setImageURI(
-                    Uri.fromFile(imgFile))
-                viewModel.photoUri.value = Uri.fromFile(imgFile).toString()
+                val imgUri = Uri.fromFile(imgFile)
+                binding.bottomSheet.ivBotsheetReadBookPhoto.setImageURI(imgUri)
+                viewModel.photoUri.value = imgUri.toString()
             } else {
                 imgFile.delete()
                 return
@@ -148,19 +147,5 @@ class ReadBookFragment : Fragment() {
         }
     }
 
-    private fun createImageFile(): File {
-        val timeStamp = getTime()
-        val pictureName = getString(R.string.picture_file_format, timeStamp)
 
-        val storageDir = requireActivity().getExternalFilesDir(
-            Environment.DIRECTORY_PICTURES)
-
-        val image = File.createTempFile(
-            pictureName,
-            "jpg",
-            storageDir)
-
-        picturePath = image.absolutePath
-        return image
-    }
 }

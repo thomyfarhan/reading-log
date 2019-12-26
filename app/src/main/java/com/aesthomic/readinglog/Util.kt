@@ -1,7 +1,10 @@
 package com.aesthomic.readinglog
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.res.Resources
+import android.os.Environment
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -73,4 +76,18 @@ fun String.pluralize(value: Long, pluralize: String?): String {
     } else {
         this
     }
+}
+
+fun createImageFile(activity: Activity): File {
+    val timeStamp = getTime()
+    val pictureName = activity.resources
+        .getString(R.string.picture_file_format, timeStamp)
+
+    val storageDir = activity.getExternalFilesDir(
+        Environment.DIRECTORY_PICTURES)
+
+    return File.createTempFile(
+        pictureName,
+        "jpg",
+        storageDir)
 }
