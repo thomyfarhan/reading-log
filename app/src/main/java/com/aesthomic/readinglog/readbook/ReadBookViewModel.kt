@@ -1,5 +1,6 @@
 package com.aesthomic.readinglog.readbook
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.aesthomic.readinglog.database.Book
 import com.aesthomic.readinglog.database.BookDao
 import com.aesthomic.readinglog.database.ReadDao
+import com.aesthomic.readinglog.util.writeBitmapFile
 import kotlinx.coroutines.*
+import java.io.File
 
 class ReadBookViewModel (
     val readKey: Long,
@@ -33,6 +36,10 @@ class ReadBookViewModel (
     private val _eventGallery = MutableLiveData<Boolean>()
     val eventGallery: LiveData<Boolean>
         get() = _eventGallery
+
+    private val _pictureFile = MutableLiveData<File>()
+    val pictureFile: LiveData<File>
+        get() = _pictureFile
 
     val titleText = MutableLiveData<String>()
     val pageText = MutableLiveData<String>()
@@ -67,6 +74,13 @@ class ReadBookViewModel (
                 title = titleText.value ?: "",
                 page = pageText.value?.toInt() ?: 0)
             insert(book)
+        }
+    }
+
+    fun inputBitmapFile(source: Bitmap, destination: File) {
+        uiScope.launch {
+            writeBitmapFile(source, destination)
+            _pictureFile.value = destination
         }
     }
 
