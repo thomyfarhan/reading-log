@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.aesthomic.readinglog.convertLongToFormat
+import com.aesthomic.readinglog.util.convertLongToFormat
 import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.database.ReadDao
 import kotlinx.coroutines.*

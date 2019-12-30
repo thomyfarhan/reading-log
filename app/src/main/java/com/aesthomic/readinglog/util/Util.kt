@@ -1,10 +1,8 @@
-package com.aesthomic.readinglog
+package com.aesthomic.readinglog.util
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.res.Resources
-import android.os.Environment
-import java.io.File
+import com.aesthomic.readinglog.R
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -22,21 +20,25 @@ fun convertLongToDuration(startTime: Long, endTime: Long, res: Resources): Strin
 
     return when {
         duration < ONE_MINUTE_MILLI -> {
-            res.getString(R.string.duration_seconds,
+            res.getString(
+                R.string.duration_seconds,
                 seconds, "second".pluralize(seconds))
         }
         duration < ONE_HOURS_MILLI -> {
-            res.getString(R.string.duration,
+            res.getString(
+                R.string.duration,
                 minutes, "minute".pluralize(minutes),
                 seconds, "second".pluralize(seconds))
         }
         duration < ONE_DAY_MILLI -> {
-            res.getString(R.string.duration,
+            res.getString(
+                R.string.duration,
                 hours, "hour".pluralize(hours),
                 minutes, "minute".pluralize(minutes))
         }
         else -> {
-            res.getString(R.string.duration,
+            res.getString(
+                R.string.duration,
                 days, "day".pluralize(days),
                 hours, "hours".pluralize(hours))
         }
@@ -76,18 +78,4 @@ fun String.pluralize(value: Long, pluralize: String?): String {
     } else {
         this
     }
-}
-
-fun createImageFile(activity: Activity): File {
-    val timeStamp = getTime()
-    val pictureName = activity.resources
-        .getString(R.string.picture_file_format, timeStamp)
-
-    val storageDir = activity.getExternalFilesDir(
-        Environment.DIRECTORY_PICTURES)
-
-    return File.createTempFile(
-        pictureName,
-        "jpg",
-        storageDir)
 }
