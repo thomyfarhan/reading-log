@@ -18,8 +18,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
-import com.aesthomic.readinglog.createImageFile
 import com.aesthomic.readinglog.databinding.FragmentReadBookBinding
+import com.aesthomic.readinglog.util.createImageFile
+import com.aesthomic.readinglog.util.decodeUriBitmap
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -31,6 +32,8 @@ class ReadBookFragment : Fragment() {
     companion object {
         private const val REQUEST_CAPTURE_IMAGE = 100
         private const val REQUEST_PICK_IMAGE = 101
+        private const val IMAGE_WIDTH = 750
+        private const val IMAGE_HEIGHT = 750
     }
 
     private lateinit var binding: FragmentReadBookBinding
@@ -145,8 +148,14 @@ class ReadBookFragment : Fragment() {
     private fun openAlbumIntent() {
         val albumIntent = Intent(Intent.ACTION_PICK)
         if (albumIntent.resolveActivity(requireActivity().packageManager) != null) {
-            albumIntent.setType("image/*")
-            startActivityForResult(albumIntent, REQUEST_PICK_IMAGE)
+
+            val pictureFile = getCreatedImage()
+
+            pictureFile?.let {
+                picturePath = it.absolutePath
+                albumIntent.type = "image/*"
+                startActivityForResult(albumIntent, REQUEST_PICK_IMAGE)
+            }
         }
     }
 
@@ -164,7 +173,31 @@ class ReadBookFragment : Fragment() {
                 return
             }
         }
+
+        else if (requestCode == REQUEST_PICK_IMAGE) {
+            val imgFile = File(picturePath)
+            if (resultCode == RESULT_OK) {
+                data?.data?.let {
+                    val bitmapSource = decodeUriBitmap(
+                        requireContext(), it, IMAGE_WIDTH, IMAGE_HEIGHT)
+                    viewModel.inputBitmapFile(bitmapSource, imgFile)
+                }
+            } else {
+                imgFile.delete()
+                return
+            }
+        }
     }
 
+    private fun getCreatedImage(): File? {
+        return try {
+            createImageFile(requireActivity())
+        } catch (ex: IOException) {
+            Toast.makeText(requireContext(),
+                getString(R.string.fail_create_file_text),
+                Toast.LENGTH_SHORT).show()
+            null
+        }
+    }
 
 }
