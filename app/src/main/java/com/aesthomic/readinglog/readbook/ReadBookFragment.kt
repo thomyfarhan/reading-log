@@ -86,6 +86,15 @@ class ReadBookFragment : Fragment() {
             }
         })
 
+        viewModel.pictureFile.observe(this, Observer {
+            it.let {
+                val imgUri = Uri.fromFile(it)
+                binding.bottomSheet.ivBotsheetReadBookPhoto
+                    .setImageURI(imgUri)
+                viewModel.photoUri.value = imgUri.toString()
+            }
+        })
+
         return binding.root
     }
 
