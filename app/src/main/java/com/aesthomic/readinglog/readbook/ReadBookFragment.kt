@@ -124,21 +124,12 @@ class ReadBookFragment : Fragment() {
         val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (pictureIntent.resolveActivity(requireActivity().packageManager) != null) {
 
-            val pictureFile: File?
-            try {
-                pictureFile = createImageFile(requireActivity())
-            } catch (ex: IOException) {
-                Toast.makeText(requireContext(),
-                    getString(R.string.fail_create_file_text),
-                    Toast.LENGTH_SHORT).show()
-                return
-            }
+            val pictureFile = getCreatedImage()
 
-            pictureFile.let {
+            pictureFile?.let {
                 picturePath = pictureFile.absolutePath
                 val photoUri = FileProvider.getUriForFile(requireContext(),
-                    getString(R.string.application_id),
-                    pictureFile)
+                    getString(R.string.application_id), it)
                 pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE)
             }
@@ -166,8 +157,9 @@ class ReadBookFragment : Fragment() {
             val imgFile = File(picturePath)
             if (resultCode == RESULT_OK) {
                 val imgUri = Uri.fromFile(imgFile)
-                binding.bottomSheet.ivBotsheetReadBookPhoto.setImageURI(imgUri)
-                viewModel.photoUri.value = imgUri.toString()
+                val bitmapSource = decodeUriBitmap(
+                    requireContext(), imgUri, IMAGE_WIDTH, IMAGE_HEIGHT)
+                viewModel.inputBitmapFile(bitmapSource, imgFile)
             } else {
                 imgFile.delete()
                 return
