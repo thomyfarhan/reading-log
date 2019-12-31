@@ -37,6 +37,10 @@ class ReadBookViewModel (
     val eventGallery: LiveData<Boolean>
         get() = _eventGallery
 
+    private val _eventBook = MutableLiveData<Boolean>()
+    val eventBook: LiveData<Boolean>
+        get() = _eventBook
+
     private val _pictureFile = MutableLiveData<File>()
     val pictureFile: LiveData<File>
         get() = _pictureFile
@@ -124,6 +128,14 @@ class ReadBookViewModel (
 
     fun onGalleryDone() {
         _eventGallery.value = false
+    }
+
+    fun onEventBook() {
+        _eventBook.value = true
+    }
+
+    fun onBookDone() {
+        _eventBook.value = false
     }
 
     override fun onCleared() {

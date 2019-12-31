@@ -25,7 +25,10 @@
                 app:layout_constraintStart_toStartOf="@id/gl_readbook_margin_start"
                 app:layout_constraintEnd_toEndOf="@id/gl_readbook_margin_end"
                 app:layout_constraintTop_toTopOf="@id/gl_readbook_margin_top"
-                android:inputType="text"
+                android:onClick="@{() -> viewModel.onEventBook()}"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="true"
+                android:focusable="false"
                 android:hint="@string/book_title"/>
 
             <com.google.android.material.textfield.TextInputEditText

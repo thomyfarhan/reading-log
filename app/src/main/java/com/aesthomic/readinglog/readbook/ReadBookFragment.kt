@@ -21,6 +21,7 @@ import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.databinding.FragmentReadBookBinding
 import com.aesthomic.readinglog.util.createPictureFile
 import com.aesthomic.readinglog.util.decodeUriBitmap
+import com.aesthomic.readinglog.util.hideKeyboard
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -85,6 +86,16 @@ class ReadBookFragment : Fragment() {
             if (it) {
                 openAlbumIntent()
                 viewModel.onGalleryDone()
+            }
+        })
+
+        viewModel.eventBook.observe(this, Observer {
+            if (it) {
+                hideKeyboard(requireContext(), requireView())
+                this.findNavController().navigate(
+                    ReadBookFragmentDirections.actionReadBookDestinationToBookListDestination()
+                )
+                viewModel.onBookDone()
             }
         })
 
