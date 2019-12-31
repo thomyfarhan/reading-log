@@ -1,7 +1,11 @@
 package com.aesthomic.readinglog.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.res.Resources
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.aesthomic.readinglog.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -78,4 +82,10 @@ fun String.pluralize(value: Long, pluralize: String?): String {
     } else {
         this
     }
+}
+
+fun hideKeyboard(context: Context, view: View) {
+    val imm = context.getSystemService(
+        Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
