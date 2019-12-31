@@ -19,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.databinding.FragmentReadBookBinding
-import com.aesthomic.readinglog.util.createImageFile
+import com.aesthomic.readinglog.util.createPictureFile
 import com.aesthomic.readinglog.util.decodeUriBitmap
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,7 +37,6 @@ class ReadBookFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentReadBookBinding
-    private lateinit var picturePath: String
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     private var readKey = 0L
@@ -124,10 +123,9 @@ class ReadBookFragment : Fragment() {
         val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (pictureIntent.resolveActivity(requireActivity().packageManager) != null) {
 
-            val pictureFile = getCreatedImage()
+            viewModel.newPicture = getCreatedPicture()
 
-            pictureFile?.let {
-                picturePath = pictureFile.absolutePath
+            viewModel.newPicture?.let {
                 val photoUri = FileProvider.getUriForFile(requireContext(),
                     getString(R.string.application_id), it)
                 pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
@@ -140,10 +138,9 @@ class ReadBookFragment : Fragment() {
         val albumIntent = Intent(Intent.ACTION_PICK)
         if (albumIntent.resolveActivity(requireActivity().packageManager) != null) {
 
-            val pictureFile = getCreatedImage()
+            viewModel.newPicture = getCreatedPicture()
 
-            pictureFile?.let {
-                picturePath = it.absolutePath
+            viewModel.newPicture?.let {
                 albumIntent.type = "image/*"
                 startActivityForResult(albumIntent, REQUEST_PICK_IMAGE)
             }
@@ -154,36 +151,34 @@ class ReadBookFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CAPTURE_IMAGE) {
-            val imgFile = File(picturePath)
             if (resultCode == RESULT_OK) {
-                val imgUri = Uri.fromFile(imgFile)
+                val imgUri = Uri.fromFile(viewModel.newPicture)
                 val bitmapSource = decodeUriBitmap(
                     requireContext(), imgUri, IMAGE_WIDTH, IMAGE_HEIGHT)
-                viewModel.inputBitmapFile(bitmapSource, imgFile)
+                viewModel.inputBitmapFile(bitmapSource)
             } else {
-                imgFile.delete()
+                viewModel.newPicture?.delete()
                 return
             }
         }
 
         else if (requestCode == REQUEST_PICK_IMAGE) {
-            val imgFile = File(picturePath)
             if (resultCode == RESULT_OK) {
                 data?.data?.let {
                     val bitmapSource = decodeUriBitmap(
                         requireContext(), it, IMAGE_WIDTH, IMAGE_HEIGHT)
-                    viewModel.inputBitmapFile(bitmapSource, imgFile)
+                    viewModel.inputBitmapFile(bitmapSource)
                 }
             } else {
-                imgFile.delete()
+                viewModel.newPicture?.delete()
                 return
             }
         }
     }
 
-    private fun getCreatedImage(): File? {
+    private fun getCreatedPicture(): File? {
         return try {
-            createImageFile(requireActivity())
+            createPictureFile(requireActivity())
         } catch (ex: IOException) {
             Toast.makeText(requireContext(),
                 getString(R.string.fail_create_file_text),

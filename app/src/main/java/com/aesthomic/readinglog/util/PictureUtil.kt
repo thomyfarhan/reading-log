@@ -22,7 +22,7 @@ import kotlin.math.min
  * Place a new image file by creating new File
  * with title, date and data type on the name
  */
-fun createImageFile(activity: Activity): File {
+fun createPictureFile(activity: Activity): File {
     val timeStamp = getTime()
     val pictureName = activity.resources
         .getString(R.string.picture_file_format, timeStamp)

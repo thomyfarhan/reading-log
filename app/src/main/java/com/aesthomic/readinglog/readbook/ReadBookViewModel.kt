@@ -41,6 +41,8 @@ class ReadBookViewModel (
     val pictureFile: LiveData<File>
         get() = _pictureFile
 
+    var newPicture: File? = null
+
     val titleText = MutableLiveData<String>()
     val pageText = MutableLiveData<String>()
     val photoUri = MutableLiveData<String>()
@@ -77,10 +79,12 @@ class ReadBookViewModel (
         }
     }
 
-    fun inputBitmapFile(source: Bitmap, destination: File) {
+    fun inputBitmapFile(source: Bitmap) {
         uiScope.launch {
-            writeBitmapFile(source, destination)
-            _pictureFile.value = destination
+            newPicture?.let {
+                writeBitmapFile(source, it)
+                _pictureFile.value = it
+            }
         }
     }
 
