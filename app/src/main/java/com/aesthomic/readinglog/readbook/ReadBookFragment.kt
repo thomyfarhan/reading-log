@@ -62,6 +62,12 @@ class ReadBookFragment : Fragment() {
 
         val time = System.currentTimeMillis()
 
+        viewModel.selectedBook.observe(this, Observer {
+            if (it == null) {
+                binding.etReadbookTitle.hint = getString(R.string.no_book)
+            }
+        })
+
         viewModel.eventSubmit.observe(this, Observer {
             if (it) {
                 viewModel.updateRead(time)

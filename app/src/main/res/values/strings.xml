@@ -14,4 +14,5 @@
     <string name="picture_file_format">READINGLOG_%1$s_</string>
     <string name="fail_create_file_text">Cannot create picture file, please try again</string>
     <string name="application_id">com.aesthomic.readinglog.fileprovider</string>
+    <string name="no_book">No Available Book</string>
 </resources>
