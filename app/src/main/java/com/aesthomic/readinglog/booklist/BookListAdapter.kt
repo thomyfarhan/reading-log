@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aesthomic.readinglog.database.Book
 import com.aesthomic.readinglog.databinding.ItemListBookBinding
 
-class BookListAdapter:
+class BookListAdapter(private val clickListener: BookListListener):
     ListAdapter<Book,BookListAdapter.BookListViewHolder>(BookListCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookListViewHolder {
@@ -16,7 +16,7 @@ class BookListAdapter:
     }
 
     override fun onBindViewHolder(holder: BookListViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), clickListener)
     }
 
     class BookListViewHolder(private val binding: ItemListBookBinding):
@@ -31,7 +31,7 @@ class BookListAdapter:
             }
         }
 
-        fun bind(book: Book) {
+        fun bind(book: Book, clickListener: BookListListener) {
             binding.book = book
         }
     }
@@ -46,4 +46,8 @@ class BookListCallback: DiffUtil.ItemCallback<Book>() {
         return oldItem == newItem
     }
 
+}
+
+class BookListListener (val clickListener: (id: Long) -> Unit) {
+    fun onClick(book: Book) = clickListener(book.id)
 }

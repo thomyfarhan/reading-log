@@ -36,7 +36,9 @@ class BookListFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvBookList.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = BookListAdapter()
+        val adapter = BookListAdapter(BookListListener {
+            viewModel.onBookClicked(it)
+        })
         binding.rvBookList.adapter = adapter
 
         viewModel.books.observe(this, Observer {
