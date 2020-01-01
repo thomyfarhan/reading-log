@@ -56,11 +56,15 @@ class ReadBookViewModel (
     val photoUri = MutableLiveData<String>()
     val titlePageMediator = MediatorLiveData<Boolean>()
 
+    val readPageText = MutableLiveData<String>()
+    val readMediator = MediatorLiveData<Boolean>()
+
     init {
         titlePageMediator.apply {
             addSource(titleText) {checkTitlePage()}
             addSource(pageText) {checkTitlePage()}
         }
+        setReadMediator()
         initSelectedBook()
     }
 
@@ -70,9 +74,21 @@ class ReadBookViewModel (
         }
     }
 
+    private fun setReadMediator() {
+        readMediator.apply {
+            addSource(readPageText) {checkReadText()}
+            addSource(selectedBook) {checkReadText()}
+        }
+    }
+
     private fun checkTitlePage() {
         titlePageMediator.value = titleText.value?.isNotBlank() ?: false
                 && pageText.value?.isNotBlank() ?: false
+    }
+
+    private fun checkReadText() {
+        readMediator.value = readPageText.value?.isNotBlank() ?: false
+                && selectedBook.value != null
     }
 
     fun updateRead(time: Long) {
@@ -177,6 +193,11 @@ class ReadBookViewModel (
         titlePageMediator.apply {
             removeSource(titleText)
             removeSource(pageText)
+        }
+
+        readMediator.apply {
+            removeSource(readPageText)
+            removeSource(selectedBook)
         }
     }
 

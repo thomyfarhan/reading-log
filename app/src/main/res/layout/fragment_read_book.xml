@@ -11,7 +11,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,6 +30,7 @@
                 android:cursorVisible="false"
                 android:focusableInTouchMode="true"
                 android:focusable="false"
+                android:inputType="textNoSuggestions"
                 android:text="@{viewModel.selectedBook.title}"/>
 
             <com.google.android.material.textfield.TextInputEditText
@@ -39,6 +41,7 @@
                 app:layout_constraintStart_toStartOf="@id/et_readbook_title"
                 app:layout_constraintEnd_toEndOf="@id/et_readbook_title"
                 android:inputType="number"
+                android:text="@={viewModel.readPageText}"
                 android:hint="@string/chapter"/>
 
             <com.google.android.material.button.MaterialButton
@@ -46,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/half_vertical_margin"
+                android:enabled="@{viewModel.readMediator}"
                 app:layout_constraintTop_toBottomOf="@id/et_readbook_page"
                 app:layout_constraintStart_toStartOf="@id/gl_readbook_margin_start"
                 app:layout_constraintEnd_toEndOf="@id/gl_readbook_margin_end"
