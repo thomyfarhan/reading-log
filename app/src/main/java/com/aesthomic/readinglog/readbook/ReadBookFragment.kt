@@ -53,6 +53,7 @@ class ReadBookFragment : Fragment() {
             inflater, R.layout.fragment_read_book, container, false)
 
         initViewModel()
+        initBookTitle()
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -125,6 +126,13 @@ class ReadBookFragment : Fragment() {
 
         if (viewModel.readKey == -1L) {
             viewModel.readKey = ReadBookFragmentArgs.fromBundle(requireArguments()).readKey
+        }
+    }
+
+    private fun initBookTitle() {
+        val bookKey = ReadBookFragmentArgs.fromBundle(requireArguments()).bookKey
+        if (bookKey != -1L) {
+            viewModel.setBookKey(bookKey)
         }
     }
 
