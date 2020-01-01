@@ -9,13 +9,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 
 import com.aesthomic.readinglog.R
+import com.aesthomic.readinglog.app.di.Scopes
 import com.aesthomic.readinglog.databinding.FragmentBookPictureDialogBinding
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.android.ext.android.getKoin
+import org.koin.core.scope.Scope
 
 class BookPictureDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentBookPictureDialogBinding
-    private val viewModel: ReadBookViewModel by sharedViewModel()
+    private lateinit var scope: Scope
+    private lateinit var viewModel: ReadBookViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +26,8 @@ class BookPictureDialogFragment : DialogFragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_book_picture_dialog, container, false)
+
+        initViewModel()
 
         return binding.root
     }
@@ -39,5 +44,10 @@ class BookPictureDialogFragment : DialogFragment() {
             viewModel.onEventGallery()
             dismiss()
         }
+    }
+
+    private fun initViewModel() {
+        scope = getKoin().getScope(Scopes.READ_BOOK)
+        viewModel = scope.get()
     }
 }
