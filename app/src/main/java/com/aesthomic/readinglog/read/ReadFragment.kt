@@ -38,7 +38,7 @@ class ReadFragment : Fragment() {
             it?.let {
                 this.findNavController().navigate(
                     ReadFragmentDirections.
-                        actionReadDestinationToReadBookDestination(it.id)
+                        actionReadDestinationToReadBookDestination(it.id, -1L)
                 )
                 viewModel.onNavigateReadBookDone()
             }
