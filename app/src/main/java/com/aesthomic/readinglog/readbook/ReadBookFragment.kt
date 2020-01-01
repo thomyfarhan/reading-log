@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -46,6 +47,8 @@ class ReadBookFragment : Fragment() {
     private lateinit var scope: Scope
     private lateinit var viewModel: ReadBookViewModel
 
+    private var lastClickTime = 0L
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,7 +71,7 @@ class ReadBookFragment : Fragment() {
         })
 
         viewModel.eventSubmit.observe(this, Observer {
-            if (it) {
+            if (it && SystemClock.elapsedRealtime() - lastClickTime > 1000) {
                 hideKeyboard(requireContext(), requireView())
 
                 val dialog = MaterialAlertDialogBuilder(activity)
@@ -83,6 +86,7 @@ class ReadBookFragment : Fragment() {
                 }
                 dialog.show()
                 viewModel.onSubmitDone()
+                lastClickTime = SystemClock.elapsedRealtime()
             }
         })
 
