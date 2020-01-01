@@ -18,9 +18,15 @@ interface BookDao {
     @Query("SELECT * FROM books WHERE id = :id")
     fun get(id: Long): Book?
 
+    @Query("SELECT * FROM books ORDER BY last_accessed DESC LIMIT 1")
+    fun getLastAccessed(): Book?
+
     @Query("DELETE FROM books WHERE id = :id")
     fun delete(id: Long)
 
     @Query("SELECT * FROM books ORDER BY id DESC")
     fun getAll(): LiveData<List<Book>>
+
+    @Query("SELECT * FROM books ORDER BY last_accessed DESC")
+    fun getAllByLastAccessed(): LiveData<List<Book>>
 }
