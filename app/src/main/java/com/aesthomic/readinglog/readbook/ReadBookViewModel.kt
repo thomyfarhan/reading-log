@@ -13,7 +13,7 @@ import kotlinx.coroutines.*
 import java.io.File
 
 class ReadBookViewModel (
-    val readKey: Long,
+    var readKey: Long,
     private val dbRead: ReadDao,
     private val dbBook: BookDao): ViewModel() {
 
@@ -138,8 +138,7 @@ class ReadBookViewModel (
         _eventBook.value = false
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    fun onClearState() {
         viewModelJob.cancel()
 
         titlePageMediator.apply {
@@ -147,4 +146,6 @@ class ReadBookViewModel (
             removeSource(pageText)
         }
     }
+
+
 }
