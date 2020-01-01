@@ -6,10 +6,13 @@ import com.aesthomic.readinglog.database.ReadDao
 import com.aesthomic.readinglog.database.ReadingLogDatabase
 import com.aesthomic.readinglog.readbook.ReadBookViewModel
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    single { (key: Long) -> ReadBookViewModel(key, get(), get()) }
+    scope(named(Scopes.READ_BOOK)) {
+        scoped { ReadBookViewModel(-1L, get(), get()) }
+    }
 }
 
 val databaseModule = module {
