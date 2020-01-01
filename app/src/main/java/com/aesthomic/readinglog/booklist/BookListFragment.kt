@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.aesthomic.readinglog.R
@@ -29,6 +30,16 @@ class BookListFragment : Fragment() {
 
         initViewModel()
         initRecyclerView()
+
+        viewModel.navigateToReadBook.observe(this, Observer {
+            it?.let {
+                this.findNavController().navigate(
+                    BookListFragmentDirections
+                        .actionBookListDestinationToReadBookDestination(-1L, it)
+                )
+                viewModel.navigateReadBookDone()
+            }
+        })
 
         return binding.root
     }
