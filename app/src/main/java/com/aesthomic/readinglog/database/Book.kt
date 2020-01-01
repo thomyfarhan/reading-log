@@ -19,5 +19,8 @@ data class Book(
     var desc: String = "",
 
     @ColumnInfo(name = "photo")
-    var photo: String = ""
+    var photo: String = "",
+
+    @ColumnInfo(name = "last_accessed")
+    var lastAccessed: Long = 0L
 )
