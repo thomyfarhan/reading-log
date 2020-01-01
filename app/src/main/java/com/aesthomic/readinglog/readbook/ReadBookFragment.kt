@@ -24,6 +24,7 @@ import com.aesthomic.readinglog.util.createPictureFile
 import com.aesthomic.readinglog.util.decodeUriBitmap
 import com.aesthomic.readinglog.util.hideKeyboard
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
@@ -69,8 +70,18 @@ class ReadBookFragment : Fragment() {
         viewModel.eventSubmit.observe(this, Observer {
             if (it) {
                 hideKeyboard(requireContext(), requireView())
-                this.findNavController().navigate(
-                    ReadBookFragmentDirections.actionReadBookDestinationToReadDestination())
+
+                val dialog = MaterialAlertDialogBuilder(activity)
+                dialog.apply {
+                    setTitle("Congratulations!")
+                    setMessage("Record successfully saved!")
+                    setCancelable(false)
+                }
+                dialog.setNeutralButton("Ok") {_,_ ->
+                    this.findNavController().navigate(
+                        ReadBookFragmentDirections.actionReadBookDestinationToReadDestination())
+                }
+                dialog.show()
                 viewModel.onSubmitDone()
             }
         })
