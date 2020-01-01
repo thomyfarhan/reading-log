@@ -21,6 +21,10 @@ class ReadBookViewModel (
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    private val _bookKey = MutableLiveData<Long>()
+    val bookKey: LiveData<Long>
+        get() = _bookKey
+
     private val _eventSubmit = MutableLiveData<Boolean>()
     val eventSubmit: LiveData<Boolean>
         get() = _eventSubmit
@@ -96,6 +100,10 @@ class ReadBookViewModel (
         withContext(Dispatchers.IO) {
             dbBook.insert(book)
         }
+    }
+
+    fun setBookKey(key: Long) {
+        _bookKey.value = key
     }
 
     fun onDataSubmitted() {
