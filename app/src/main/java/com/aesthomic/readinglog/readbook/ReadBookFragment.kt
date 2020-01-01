@@ -60,8 +60,6 @@ class ReadBookFragment : Fragment() {
 
         setupBottomSheetBehavior()
 
-        val time = System.currentTimeMillis()
-
         viewModel.selectedBook.observe(this, Observer {
             if (it == null) {
                 binding.etReadbookTitle.hint = getString(R.string.no_book)
@@ -70,11 +68,10 @@ class ReadBookFragment : Fragment() {
 
         viewModel.eventSubmit.observe(this, Observer {
             if (it) {
-                viewModel.updateRead(time)
-                viewModel.onSubmitDone()
-
+                hideKeyboard(requireContext(), requireView())
                 this.findNavController().navigate(
                     ReadBookFragmentDirections.actionReadBookDestinationToReadDestination())
+                viewModel.onSubmitDone()
             }
         })
 

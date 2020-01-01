@@ -91,13 +91,18 @@ class ReadBookViewModel (
                 && selectedBook.value != null
     }
 
-    fun updateRead(time: Long) {
+    fun updateRead() {
         uiScope.launch {
             withContext(Dispatchers.IO) {
                 val read = dbRead.get(readKey) ?: return@withContext
-                read.endTimeMillis = time
+                read.apply {
+                    endTimeMillis = System.currentTimeMillis()
+                    lastPage = readPageText.value?.toInt() ?: 0
+                    bookId = selectedBook.value?.id
+                }
                 dbRead.update(read)
             }
+            _eventSubmit.value = true
         }
     }
 
@@ -143,10 +148,6 @@ class ReadBookViewModel (
         uiScope.launch {
             _selectedBook.value = getBookById(key)
         }
-    }
-
-    fun onDataSubmitted() {
-        _eventSubmit.value = true
     }
 
     fun onSubmitDone() {
