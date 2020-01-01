@@ -18,13 +18,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
+import com.aesthomic.readinglog.app.di.Scopes
 import com.aesthomic.readinglog.databinding.FragmentReadBookBinding
 import com.aesthomic.readinglog.util.createPictureFile
 import com.aesthomic.readinglog.util.decodeUriBitmap
 import com.aesthomic.readinglog.util.hideKeyboard
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import org.koin.android.ext.android.getKoin
+import org.koin.core.qualifier.named
+import org.koin.core.scope.Scope
 import java.io.File
 import java.io.IOException
 
@@ -40,8 +42,8 @@ class ReadBookFragment : Fragment() {
     private lateinit var binding: FragmentReadBookBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
-    private var readKey = 0L
-    private val viewModel: ReadBookViewModel by viewModel { parametersOf(readKey) }
+    private lateinit var scope: Scope
+    private lateinit var viewModel: ReadBookViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +52,8 @@ class ReadBookFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_read_book, container, false)
 
-        readKey = ReadBookFragmentArgs.fromBundle(requireArguments()).readKey
+        initViewModel()
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -109,6 +112,20 @@ class ReadBookFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    private fun initViewModel() {
+        scope = if (getKoin().getScopeOrNull(Scopes.READ_BOOK) == null) {
+            getKoin().createScope(Scopes.READ_BOOK, named(Scopes.READ_BOOK))
+        } else {
+            getKoin().getScope(Scopes.READ_BOOK)
+        }
+
+        viewModel = scope.get()
+
+        if (viewModel.readKey == -1L) {
+            viewModel.readKey = ReadBookFragmentArgs.fromBundle(requireArguments()).readKey
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -198,4 +215,9 @@ class ReadBookFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onClearState()
+        scope.close()
+    }
 }
