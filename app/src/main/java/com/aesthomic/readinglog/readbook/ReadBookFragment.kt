@@ -222,10 +222,4 @@ class ReadBookFragment : Fragment() {
             null
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onClearState()
-        scope.close()
-    }
 }

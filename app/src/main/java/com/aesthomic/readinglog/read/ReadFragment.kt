@@ -16,8 +16,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.aesthomic.readinglog.R
+import com.aesthomic.readinglog.app.di.Scopes
 import com.aesthomic.readinglog.database.ReadingLogDatabase
 import com.aesthomic.readinglog.databinding.FragmentReadBinding
+import com.aesthomic.readinglog.readbook.ReadBookViewModel
+import org.koin.android.ext.android.getKoin
 
 class ReadFragment : Fragment() {
 
@@ -33,6 +36,7 @@ class ReadFragment : Fragment() {
 
         initViewModel()
         initRecyclerView()
+        killReadBookScope()
 
         viewModel.navigateToReadBook.observe(this, Observer {
             it?.let {
@@ -74,6 +78,18 @@ class ReadFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    private fun killReadBookScope() {
+        val readBookScope = if (getKoin().getScopeOrNull(Scopes.READ_BOOK) != null) {
+            getKoin().getScope(Scopes.READ_BOOK)
+        } else {null}
+
+        readBookScope?.let {
+            val readBookViewModel: ReadBookViewModel = it.get()
+            readBookViewModel.onClearState()
+            it.close()
+        }
     }
 
     private fun initRecyclerView() {
