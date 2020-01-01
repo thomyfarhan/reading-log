@@ -7,11 +7,15 @@
         <variable
             name="book"
             type="com.aesthomic.readinglog.database.Book" />
+        <variable
+            name="clickListener"
+            type="com.aesthomic.readinglog.booklist.BookListListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(book)}">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_list_book_title"

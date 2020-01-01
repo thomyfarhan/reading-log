@@ -33,6 +33,7 @@ class BookListAdapter(private val clickListener: BookListListener):
 
         fun bind(book: Book, clickListener: BookListListener) {
             binding.book = book
+            binding.clickListener = clickListener
         }
     }
 }
