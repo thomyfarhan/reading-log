@@ -25,6 +25,10 @@ class ReadBookViewModel (
     val bookKey: LiveData<Long>
         get() = _bookKey
 
+    private val _selectedBook = MutableLiveData<Book>()
+    val selectedBook: LiveData<Book>
+        get() = _selectedBook
+
     private val _eventSubmit = MutableLiveData<Boolean>()
     val eventSubmit: LiveData<Boolean>
         get() = _eventSubmit
@@ -61,6 +65,13 @@ class ReadBookViewModel (
             addSource(titleText) {checkTitlePage()}
             addSource(pageText) {checkTitlePage()}
         }
+        initSelectedBook()
+    }
+
+    private fun initSelectedBook() {
+        uiScope.launch {
+            _selectedBook.value = getBookByLastAccessed()
+        }
     }
 
     private fun checkTitlePage() {
@@ -82,8 +93,10 @@ class ReadBookViewModel (
         uiScope.launch {
             val book = Book(photo = photoUri.value ?: "",
                 title = titleText.value ?: "",
-                page = pageText.value?.toInt() ?: 0)
+                page = pageText.value?.toInt() ?: 0,
+                lastAccessed = System.currentTimeMillis())
             insert(book)
+            _selectedBook.value = getBookByLastAccessed()
         }
     }
 
@@ -99,6 +112,12 @@ class ReadBookViewModel (
     private suspend fun insert(book: Book) {
         withContext(Dispatchers.IO) {
             dbBook.insert(book)
+        }
+    }
+
+    private suspend fun getBookByLastAccessed(): Book? {
+        return withContext(Dispatchers.IO) {
+            dbBook.getLastAccessed()
         }
     }
 

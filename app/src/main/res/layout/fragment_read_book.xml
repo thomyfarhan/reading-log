@@ -29,7 +29,7 @@
                 android:cursorVisible="false"
                 android:focusableInTouchMode="true"
                 android:focusable="false"
-                android:hint="@string/book_title"/>
+                android:text="@{viewModel.selectedBook.title}"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_readbook_page"
