@@ -21,10 +21,6 @@ class ReadBookViewModel (
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val _bookKey = MutableLiveData<Long>()
-    val bookKey: LiveData<Long>
-        get() = _bookKey
-
     private val _selectedBook = MutableLiveData<Book>()
     val selectedBook: LiveData<Book>
         get() = _selectedBook
@@ -115,14 +111,22 @@ class ReadBookViewModel (
         }
     }
 
+    private suspend fun getBookById(id: Long): Book? {
+        return withContext(Dispatchers.IO) {
+            dbBook.get(id)
+        }
+    }
+
     private suspend fun getBookByLastAccessed(): Book? {
         return withContext(Dispatchers.IO) {
             dbBook.getLastAccessed()
         }
     }
 
-    fun setBookKey(key: Long) {
-        _bookKey.value = key
+    fun setSelectedBook(key: Long) {
+        uiScope.launch {
+            _selectedBook.value = getBookById(key)
+        }
     }
 
     fun onDataSubmitted() {
@@ -158,7 +162,9 @@ class ReadBookViewModel (
     }
 
     fun onEventBook() {
-        _eventBook.value = true
+        if (selectedBook.value != null) {
+            _eventBook.value = true
+        }
     }
 
     fun onBookDone() {

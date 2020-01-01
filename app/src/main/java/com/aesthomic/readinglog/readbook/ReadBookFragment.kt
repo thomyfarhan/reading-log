@@ -138,7 +138,7 @@ class ReadBookFragment : Fragment() {
     private fun initBookTitle() {
         val bookKey = ReadBookFragmentArgs.fromBundle(requireArguments()).bookKey
         if (bookKey != -1L) {
-            viewModel.setBookKey(bookKey)
+            viewModel.setSelectedBook(bookKey)
         }
     }
 
