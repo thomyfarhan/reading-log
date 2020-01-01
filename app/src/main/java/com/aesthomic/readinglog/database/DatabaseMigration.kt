@@ -20,3 +20,17 @@ val MIGRATION_1_2: Migration = object: Migration(1, 2) {
     }
 
 }
+
+val MIGRATION_2_3: Migration = object: Migration(2, 3) {
+
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE IF NOT EXISTS `books_new` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `page` INTEGER NOT NULL, `desc` TEXT NOT NULL, `photo` TEXT NOT NULL, `last_accessed` INTEGER NOT NULL)")
+
+        database.execSQL("INSERT INTO books_new (id, title, page, `desc`, photo, last_accessed) SELECT id, title, page, `desc`, photo, ${System.currentTimeMillis()} FROM books")
+
+        database.execSQL("DROP TABLE books")
+
+        database.execSQL("ALTER TABLE books_new RENAME TO books")
+    }
+
+}
