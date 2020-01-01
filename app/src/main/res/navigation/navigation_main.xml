@@ -34,6 +34,9 @@
         <argument
             android:name="readKey"
             app:argType="long" />
+        <argument
+            android:name="bookKey"
+            app:argType="long" />
     </fragment>
 
     <fragment
