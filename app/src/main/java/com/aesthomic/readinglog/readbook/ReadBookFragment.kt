@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.os.SystemClock
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -90,6 +91,21 @@ class ReadBookFragment : Fragment() {
             }
         })
 
+        viewModel.eventSubmitBook.observe(this, Observer {
+            if (it) {
+                hideKeyboard(requireContext(), requireView())
+                viewModel.clearBookField()
+                viewModel.onSubmitBookDone()
+                binding.bottomSheet.ivBotsheetReadBookPhoto
+                    .setImageResource(R.drawable.ic_photo)
+                Toast.makeText(requireContext(), "Book Successfully added!", Toast.LENGTH_SHORT).show()
+
+                Handler().postDelayed({
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }, 250)
+            }
+        })
+
         viewModel.eventImage.observe(this, Observer {
             if (it) {
                 this.findNavController().navigate(R.id.book_picture_dialog)
@@ -122,7 +138,7 @@ class ReadBookFragment : Fragment() {
         })
 
         viewModel.pictureFile.observe(this, Observer {
-            it.let {
+            it?.let {
                 val imgUri = Uri.fromFile(it)
                 binding.bottomSheet.ivBotsheetReadBookPhoto
                     .setImageURI(imgUri)

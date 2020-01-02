@@ -29,6 +29,10 @@ class ReadBookViewModel (
     val eventSubmit: LiveData<Boolean>
         get() = _eventSubmit
 
+    private val _eventSubmitBook = MutableLiveData<Boolean>()
+    val eventSubmitBook: LiveData<Boolean>
+        get() = _eventSubmitBook
+
     private val _eventImage = MutableLiveData<Boolean>()
     val eventImage: LiveData<Boolean>
         get() = _eventImage
@@ -114,6 +118,7 @@ class ReadBookViewModel (
                 lastAccessed = System.currentTimeMillis())
             insert(book)
             _selectedBook.value = getBookByLastAccessed()
+            _eventSubmitBook.value = true
         }
     }
 
@@ -154,6 +159,10 @@ class ReadBookViewModel (
         _eventSubmit.value = false
     }
 
+    fun onSubmitBookDone() {
+        _eventSubmitBook.value = false
+    }
+
     fun onEventImage() {
         _eventImage.value = true
     }
@@ -186,6 +195,13 @@ class ReadBookViewModel (
 
     fun onBookDone() {
         _eventBook.value = false
+    }
+
+    fun clearBookField() {
+        _pictureFile.value = null
+        titleText.value = null
+        pageText.value = null
+        photoUri.value = null
     }
 
     fun onClearState() {
