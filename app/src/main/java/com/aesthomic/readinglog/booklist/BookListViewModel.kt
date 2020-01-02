@@ -8,7 +8,7 @@ import com.aesthomic.readinglog.database.BookDao
 class BookListViewModel(
     private val dbBook: BookDao): ViewModel() {
 
-    val books = dbBook.getAll()
+    val books = dbBook.getAllByLastAccessed()
 
     private val _navigateToReadBook = MutableLiveData<Long>()
     val navigateToReadBook: LiveData<Long>
