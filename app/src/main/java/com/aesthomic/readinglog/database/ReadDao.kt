@@ -51,4 +51,7 @@ interface ReadDao {
      */
     @Query("SELECT * FROM read ORDER BY id DESC LIMIT 1")
     fun getCurrentRead(): Read?
+
+    @Query("SELECT read.id, read.start_time_millis, read.end_time_millis, read.last_page, books.title, books.page FROM read LEFT OUTER JOIN books ON read.book_id = books.id ORDER BY read.id DESC")
+    fun getAllReadBook(): LiveData<List<ReadBook>>
 }
