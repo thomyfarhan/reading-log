@@ -1,9 +1,7 @@
 package com.aesthomic.readinglog.readdetail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.aesthomic.readinglog.database.Book
 import com.aesthomic.readinglog.database.BookDao
 import com.aesthomic.readinglog.util.convertLongToFormat
 import com.aesthomic.readinglog.database.Read
@@ -21,6 +19,8 @@ class ReadDetailViewModel (
     private val _read = MutableLiveData<Read?>()
     val read: LiveData<Read?>
         get() = _read
+
+    val book = MediatorLiveData<Book>()
 
     private val _navigateToRead = MutableLiveData<Boolean>()
     val navigateToRead: LiveData<Boolean>
@@ -40,6 +40,7 @@ class ReadDetailViewModel (
 
     init {
         initRead()
+        initBook()
     }
 
     private fun initRead() {
@@ -48,9 +49,23 @@ class ReadDetailViewModel (
         }
     }
 
+    private fun initBook() {
+        book.addSource(read) {
+            uiScope.launch {
+                book.value = getBookById(it?.bookId ?: 0L)
+            }
+        }
+    }
+
     private suspend fun getReadById(key: Long): Read? {
         return withContext(Dispatchers.IO) {
             dbRead.get(key)
+        }
+    }
+
+    private suspend fun getBookById(key: Long): Book? {
+        return withContext(Dispatchers.IO) {
+            dbBook.get(key)
         }
     }
 
@@ -65,5 +80,6 @@ class ReadDetailViewModel (
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+        book.removeSource(read)
     }
 }
