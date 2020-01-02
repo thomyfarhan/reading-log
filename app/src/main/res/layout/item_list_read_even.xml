@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="read"
-            type="com.aesthomic.readinglog.database.Read" />
+            name="readBook"
+            type="com.aesthomic.readinglog.database.ReadBook" />
 
         <variable
             name="clickListener"
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
-        android:onClick="@{() -> clickListener.onClick(read)}">
+        android:onClick="@{() -> clickListener.onClick(readBook)}">
 
         <TextView
             android:id="@+id/tv_list_read_even_month"
@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="@id/gl_list_read_even_start"
             app:layout_constraintEnd_toEndOf="@id/gl_list_read_even_middle"
             app:layout_constraintTop_toTopOf="@id/gl_list_read_even_top"
-            app:readMonthFormatted="@{read}"
+            app:readMonthFormatted="@{readBook}"
             android:gravity="center"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -40,7 +40,8 @@
             app:layout_constraintStart_toStartOf="@id/tv_list_read_even_month"
             app:layout_constraintEnd_toEndOf="@id/tv_list_read_even_month"
             app:layout_constraintTop_toBottomOf="@+id/tv_list_read_even_month"
-            app:readDateFormatted="@{read}"
+            app:layout_constraintBottom_toBottomOf="@id/gl_list_read_even_bottom"
+            app:readDateFormatted="@{readBook}"
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -58,6 +59,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:textSize="20sp"
+            android:text="@{readBook.bookTitle}"
             tools:text="The Lord of The Ring The Lord of The Ring" />
 
         <TextView
@@ -68,7 +70,7 @@
             app:layout_constraintStart_toStartOf="@id/tv_list_read_even_title"
             app:layout_constraintEnd_toEndOf="@id/tv_list_read_even_title"
             app:layout_constraintBottom_toBottomOf="@id/tv_list_read_even_date"
-            app:readDurationFormatted="@{read}"
+            app:readDurationFormatted="@{readBook}"
             android:textStyle="italic"
             tools:text="1 Hour 27 Minutes" />
 

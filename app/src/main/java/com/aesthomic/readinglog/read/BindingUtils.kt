@@ -6,22 +6,23 @@ import com.aesthomic.readinglog.util.convertLongToDate
 import com.aesthomic.readinglog.util.convertLongToDuration
 import com.aesthomic.readinglog.util.convertLongToMonth
 import com.aesthomic.readinglog.database.Read
+import com.aesthomic.readinglog.database.ReadBook
 
 @BindingAdapter("readMonthFormatted")
-fun TextView.setReadMonthFormatted(read: Read) {
-    text = convertLongToMonth(read.startTimeMillis)
+fun TextView.setReadMonthFormatted(readBook: ReadBook) {
+    text = convertLongToMonth(readBook.startTimeMillis)
 }
 
 @BindingAdapter("readDateFormatted")
-fun TextView.setReadDateFormatted(read: Read) {
-    text = convertLongToDate(read.startTimeMillis)
+fun TextView.setReadDateFormatted(readBook: ReadBook) {
+    text = convertLongToDate(readBook.startTimeMillis)
 }
 
 @BindingAdapter("readDurationFormatted")
-fun TextView.setReadDurationFormatted(read: Read) {
+fun TextView.setReadDurationFormatted(readBook: ReadBook) {
     text = convertLongToDuration(
-        read.startTimeMillis,
-        read.endTimeMillis,
+        readBook.startTimeMillis,
+        readBook.endTimeMillis,
         context.resources
     )
 }

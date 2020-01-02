@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.aesthomic.readinglog.database.Read
+import com.aesthomic.readinglog.database.ReadBook
 import com.aesthomic.readinglog.databinding.ItemListReadBinding
 import com.aesthomic.readinglog.databinding.ItemListReadEvenBinding
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +31,7 @@ class ReadAdapter(private val clickListener: ReadListener):
      * Add list and group the list with the data item type
      * by adding conditial whether the read object is odd or even
      */
-    fun addSubmitList(list: List<Read>) {
+    fun addSubmitList(list: List<ReadBook>) {
         adapterScope.launch {
             val items = list.map{
                 if (it.id % 2L == 0L) {
@@ -77,11 +77,11 @@ class ReadAdapter(private val clickListener: ReadListener):
         when(holder) {
             is ReadOddViewHolder -> {
                 val readItem = getItem(position) as DataItem.ReadItemOdd
-                holder.bind(readItem.read, clickListener)
+                holder.bind(readItem.readBook, clickListener)
             }
             is ReadEvenViewHolder -> {
                 val readItem = getItem(position) as DataItem.ReadItemEven
-                holder.bind(readItem.read, clickListener)
+                holder.bind(readItem.readBook, clickListener)
             }
         }
     }
@@ -92,8 +92,8 @@ class ReadAdapter(private val clickListener: ReadListener):
     class ReadOddViewHolder(private val binding: ItemListReadBinding):
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(read: Read, clickListener: ReadListener) {
-            binding.read = read
+        fun bind(readBook: ReadBook, clickListener: ReadListener) {
+            binding.readBook = readBook
             binding.clickListener = clickListener
 
             /**
@@ -120,8 +120,8 @@ class ReadAdapter(private val clickListener: ReadListener):
     class ReadEvenViewHolder(private val binding: ItemListReadEvenBinding):
             RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(read: Read, clickListener: ReadListener) {
-            binding.read = read
+        fun bind(readBook: ReadBook, clickListener: ReadListener) {
+            binding.readBook = readBook
             binding.clickListener = clickListener
 
             binding.executePendingBindings()
@@ -156,7 +156,7 @@ class ReadDiffCallback: DiffUtil.ItemCallback<DataItem>() {
 }
 
 class ReadListener(val clickListener: (readKey: Long) -> Unit) {
-    fun onClick(read: Read) = clickListener(read.id)
+    fun onClick(readBook: ReadBook) = clickListener(readBook.id)
 }
 
 /**
@@ -164,11 +164,11 @@ class ReadListener(val clickListener: (readKey: Long) -> Unit) {
  */
 sealed class DataItem {
     abstract val id: Long
-    data class ReadItemOdd(val read: Read): DataItem() {
-        override val id: Long = read.id
+    data class ReadItemOdd(val readBook: ReadBook): DataItem() {
+        override val id: Long = readBook.id
     }
 
-    data class ReadItemEven(val read: Read): DataItem() {
-        override val id: Long = read.id
+    data class ReadItemEven(val readBook: ReadBook): DataItem() {
+        override val id: Long = readBook.id
     }
 }
