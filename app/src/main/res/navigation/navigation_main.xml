@@ -11,12 +11,8 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_tab_main" />
 
-    <fragment
-        android:id="@+id/book_destination"
-        android:name="com.aesthomic.readinglog.book.BookFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_book" />
-
     <include app:graph="@navigation/navigation_read"/>
+
+    <include app:graph="@navigation/navigation_book"/>
 
 </navigation>
