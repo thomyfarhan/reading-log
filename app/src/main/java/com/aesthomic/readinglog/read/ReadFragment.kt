@@ -101,7 +101,7 @@ class ReadFragment : Fragment() {
 
         binding.rvRead.adapter = adapter
 
-        viewModel.reads.observe(this, Observer {
+        viewModel.readBook.observe(this, Observer {
             it?.let {
                 adapter.addSubmitList(it)
             }

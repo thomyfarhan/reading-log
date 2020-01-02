@@ -27,13 +27,13 @@ class ReadViewModel(
     val navigateToDetail: LiveData<Long?>
         get() = _navigateToDetail
 
-    val reads = database.getAllReads()
+    val readBook = database.getAllReadBook()
 
     val fabVisibility = Transformations.map(currentRead) {
         it == null
     }
 
-    val deleteEnable = Transformations.map(reads) {
+    val deleteEnable = Transformations.map(readBook) {
         it.isNotEmpty()
     }
 
