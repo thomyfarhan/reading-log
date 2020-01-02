@@ -2,10 +2,8 @@ package com.aesthomic.readinglog.readdetail
 
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.database.ReadingLogDatabase
 import com.aesthomic.readinglog.databinding.FragmentReadDetailBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ReadDetailFragment : Fragment() {
 
@@ -39,6 +38,8 @@ class ReadDetailFragment : Fragment() {
             }
         })
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -57,5 +58,28 @@ class ReadDetailFragment : Fragment() {
         binding.lifecycleOwner = this
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_read_detail, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.read_detail_delete -> deleteDetail()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteDetail() {
+        val dialog = MaterialAlertDialogBuilder(requireActivity())
+        dialog.apply {
+            setTitle("Are You Sure?")
+            setPositiveButton("Yes") { _, _ ->
+                viewModel.deleteRead()
+                viewModel.eventNavigateToRead()
+            }
+            setNegativeButton("No", null)
+        }
+        dialog.show()
+    }
 }

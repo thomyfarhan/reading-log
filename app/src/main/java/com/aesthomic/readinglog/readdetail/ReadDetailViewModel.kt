@@ -57,6 +57,14 @@ class ReadDetailViewModel (
         }
     }
 
+    fun deleteRead() {
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                dbRead.delete(readKey)
+            }
+        }
+    }
+
     private suspend fun getReadById(key: Long): Read? {
         return withContext(Dispatchers.IO) {
             dbRead.get(key)
