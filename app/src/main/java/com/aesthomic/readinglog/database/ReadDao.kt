@@ -40,6 +40,12 @@ interface ReadDao {
     fun get(id: Long): Read?
 
     /**
+     * Delete a column with specific id
+     */
+    @Query("DELETE FROM read WHERE id = :id")
+    fun delete(id: Long)
+
+    /**
      * Return all rows of read table
      * and store them on live data form
      */
