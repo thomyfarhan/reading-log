@@ -105,6 +105,12 @@ class ReadBookViewModel (
                     bookId = selectedBook.value?.id
                 }
                 dbRead.update(read)
+
+                val book = dbBook.get(read.bookId ?: return@withContext) ?: return@withContext
+                book.apply {
+                    lastAccessed = System.currentTimeMillis()
+                }
+                dbBook.update(book)
             }
             _eventSubmit.value = true
         }
