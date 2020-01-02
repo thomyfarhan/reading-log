@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.aesthomic.readinglog.database.BookDao
 import com.aesthomic.readinglog.util.convertLongToFormat
 import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.database.ReadDao
@@ -11,7 +12,8 @@ import kotlinx.coroutines.*
 
 class ReadDetailViewModel (
     private val readKey: Long,
-    private val database: ReadDao): ViewModel() {
+    private val dbRead: ReadDao,
+    private val dbBook: BookDao): ViewModel() {
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -48,7 +50,7 @@ class ReadDetailViewModel (
 
     private suspend fun getReadById(key: Long): Read? {
         return withContext(Dispatchers.IO) {
-            database.get(key)
+            dbRead.get(key)
         }
     }
 

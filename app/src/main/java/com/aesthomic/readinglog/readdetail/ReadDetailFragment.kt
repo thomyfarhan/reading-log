@@ -44,10 +44,12 @@ class ReadDetailFragment : Fragment() {
 
     private fun initViewModel() {
         val application = requireNotNull(this.activity).application
-        val database = ReadingLogDatabase.getInstance(application).readDao
+        val database = ReadingLogDatabase.getInstance(application)
+        val dbRead = database.readDao
+        val dbBook = database.bookDao
         val args = ReadDetailFragmentArgs.fromBundle(requireArguments())
 
-        val viewModelFactory = ReadDetailViewModelFactory(args.readKey, database)
+        val viewModelFactory = ReadDetailViewModelFactory(args.readKey, dbRead, dbBook)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ReadDetailViewModel::class.java)
 
