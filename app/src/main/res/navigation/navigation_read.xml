@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_read"
+    app:startDestination="@id/read_destination" >
+
+    <fragment
+        android:id="@+id/read_destination"
+        android:name="com.aesthomic.readinglog.read.ReadFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_read">
+        <action
+            android:id="@+id/action_read_destination_to_read_book_destination"
+            app:destination="@id/read_book_destination" />
+        <action
+            android:id="@+id/action_read_destination_to_read_detail_destination"
+            app:destination="@id/read_detail_destination" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/read_book_destination"
+        android:name="com.aesthomic.readinglog.readbook.ReadBookFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_read_book">
+        <action
+            android:id="@+id/action_read_book_destination_to_read_destination"
+            app:destination="@id/read_destination"
+            app:popUpTo="@id/read_destination"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_read_book_destination_to_book_list_destination"
+            app:destination="@id/book_list_destination" />
+        <argument
+            android:name="readKey"
+            app:argType="long" />
+        <argument
+            android:name="bookKey"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/read_detail_destination"
+        android:name="com.aesthomic.readinglog.readdetail.ReadDetailFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_read_detail">
+        <argument
+            android:name="readKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_read_detail_destination_to_read_destination"
+            app:destination="@id/read_destination"
+            app:popUpTo="@id/read_destination"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/book_list_destination"
+        android:name="com.aesthomic.readinglog.booklist.BookListFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_book_list">
+        <action
+            android:id="@+id/action_book_list_destination_to_read_book_destination"
+            app:destination="@id/read_book_destination"
+            app:popUpTo="@id/read_book_destination"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/book_picture_dialog"
+        android:name="com.aesthomic.readinglog.readbook.BookPictureDialogFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_book_picture_dialog" />
+
+</navigation>
