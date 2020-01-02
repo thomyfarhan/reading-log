@@ -3,11 +3,11 @@
     <string name="duration">%1$d %2$s, %3$d %4$s</string>
     <string name="duration_seconds">%1$d %2$s</string>
     <string name="book_title">Book Title</string>
-    <string name="chapter">Chapter</string>
+    <string name="chapter">Page</string>
     <string name="submit">Submit</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
-    <string name="last_page">Last Page</string>
+    <string name="last_page">Page History</string>
     <string name="close">Close</string>
     <string name="add_new_book">Add New Book</string>
     <string name="page">Total Page</string>
@@ -15,4 +15,5 @@
     <string name="fail_create_file_text">Cannot create picture file, please try again</string>
     <string name="application_id">com.aesthomic.readinglog.fileprovider</string>
     <string name="no_book">No Available Book</string>
+    <string name="page_info">%1$d / %2$d</string>
 </resources>
