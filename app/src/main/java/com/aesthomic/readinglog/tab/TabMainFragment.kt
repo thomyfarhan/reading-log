@@ -31,6 +31,7 @@ class TabMainFragment : Fragment() {
 
     private fun setupTab() {
         val tabMainAdapter = TabMainAdapter(requireContext(), childFragmentManager)
+        binding.vpMain.setSwipePagingEnabled(false)
         binding.vpMain.adapter = tabMainAdapter
         binding.tlMain.setupWithViewPager(binding.vpMain)
 
