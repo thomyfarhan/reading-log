@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 
@@ -14,7 +15,7 @@ import com.aesthomic.readinglog.databinding.FragmentTabMainBinding
 
 class TabMainFragment : Fragment() {
 
-    private lateinit var binding: FragmentTabMainBinding
+    lateinit var binding: FragmentTabMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,5 +37,20 @@ class TabMainFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.elevation = 0f
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val currentItem = binding.vpMain.currentItem
+                    if (currentItem != 0) {
+                        binding.vpMain.setCurrentItem(0, true)
+                    } else {
+                        requireActivity().finish()
+                    }
+                }
+
+            })
+    }
 }
