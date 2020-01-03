@@ -3,10 +3,12 @@ package com.aesthomic.readinglog.readdetail
 
 import android.os.Bundle
 import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
@@ -18,6 +20,9 @@ class ReadDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentReadDetailBinding
     private lateinit var viewModel: ReadDetailViewModel
+
+    private lateinit var callback: OnBackPressedCallback
+    private lateinit var item: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +48,18 @@ class ReadDetailFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        callback = object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                view.findNavController().popBackStack(R.id.read_destination, false)
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
     private fun initViewModel() {
         val application = requireNotNull(this.activity).application
         val database = ReadingLogDatabase.getInstance(application)
@@ -61,6 +78,7 @@ class ReadDetailFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_read_detail, menu)
+        item = menu.findItem(R.id.read_detail_delete)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -81,5 +99,20 @@ class ReadDetailFragment : Fragment() {
             setNegativeButton("No", null)
         }
         dialog.show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        callback.isEnabled = false
+        item.isVisible = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callback.isEnabled = true
+
+        if(::item.isInitialized) {
+            item.isVisible = true
+        }
     }
 }
