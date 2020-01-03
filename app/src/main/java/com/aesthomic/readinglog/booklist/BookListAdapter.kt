@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aesthomic.readinglog.database.Book
-import com.aesthomic.readinglog.databinding.ItemListBookBinding
+import com.aesthomic.readinglog.databinding.ItemListBookListBinding
 
 class BookListAdapter(private val clickListener: BookListListener):
     ListAdapter<Book,BookListAdapter.BookListViewHolder>(BookListCallback()) {
@@ -19,13 +19,13 @@ class BookListAdapter(private val clickListener: BookListListener):
         holder.bind(getItem(position), clickListener)
     }
 
-    class BookListViewHolder(private val binding: ItemListBookBinding):
+    class BookListViewHolder(private val binding: ItemListBookListBinding):
         RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             fun from(parent: ViewGroup): BookListViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val binding = ItemListBookBinding.inflate(inflater, parent, false)
+                val binding = ItemListBookListBinding.inflate(inflater, parent, false)
 
                 return BookListViewHolder(binding)
             }
