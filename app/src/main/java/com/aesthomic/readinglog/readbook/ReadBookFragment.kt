@@ -44,6 +44,7 @@ class ReadBookFragment : Fragment() {
 
     private lateinit var binding: FragmentReadBookBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var callback: OnBackPressedCallback
 
     private lateinit var scope: Scope
     private lateinit var viewModel: ReadBookViewModel
@@ -173,16 +174,17 @@ class ReadBookFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object: OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    } else {
-                        findNavController().popBackStack(R.id.read_destination, false)
-                    }
+        callback = object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                } else {
+                    findNavController().popBackStack(R.id.read_destination, false)
                 }
-            })
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun setupBottomSheetBehavior() {
@@ -256,4 +258,16 @@ class ReadBookFragment : Fragment() {
             null
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        callback.isEnabled = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callback.isEnabled = true
+    }
+
+
 }
