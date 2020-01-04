@@ -50,7 +50,7 @@
             app:pluralizePageText="@{viewModel.book.page}"
             tools:text="34 Pages"/>
 
-        <com.aesthomic.readinglog.book.CustomScrollView
+        <com.aesthomic.readinglog.customview.CustomScrollView
             android:id="@+id/sv_book_detail_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 android:textSize="16sp"
                 android:text="@{viewModel.book.desc}"/>
 
-        </com.aesthomic.readinglog.book.CustomScrollView>
+        </com.aesthomic.readinglog.customview.CustomScrollView>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_book_detail_start"

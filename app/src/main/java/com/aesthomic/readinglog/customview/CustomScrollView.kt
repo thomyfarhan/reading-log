@@ -1,4 +1,4 @@
-package com.aesthomic.readinglog.book
+package com.aesthomic.readinglog.customview
 
 import android.content.Context
 import android.util.AttributeSet
