@@ -24,12 +24,15 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
     val bookPageField = MutableLiveData<String>()
     val bookDescField = MutableLiveData<String>()
 
+    val updateInability = MediatorLiveData<Boolean>()
+
     private val _eventNavigateBook = MutableLiveData<Boolean>()
     val eventNavigateBook: LiveData<Boolean>
         get() = _eventNavigateBook
 
     init {
         setBookMediatorSource()
+        setUpdateMediatorSource()
     }
 
     private fun setBookMediatorSource() {
@@ -38,6 +41,16 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
                 book.value = getBookByKey(it)
             }
         }
+    }
+
+    private fun setUpdateMediatorSource() {
+        updateInability.addSource(bookTitleField) {checkUpdateField()}
+        updateInability.addSource(bookPageField) {checkUpdateField()}
+    }
+
+    private fun checkUpdateField() {
+        updateInability.value = !(bookTitleField.value.isNullOrBlank()
+                || bookPageField.value.isNullOrBlank())
     }
 
     fun setBookKey(key: Long) {
@@ -77,5 +90,10 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
         super.onCleared()
         viewModelJob.cancel()
         book.removeSource(bookKey)
+
+        updateInability.apply {
+            removeSource(bookTitleField)
+            removeSource(bookPageField)
+        }
     }
 }
