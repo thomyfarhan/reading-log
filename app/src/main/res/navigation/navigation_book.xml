@@ -9,6 +9,20 @@
         android:id="@+id/book_destination"
         android:name="com.aesthomic.readinglog.book.BookFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_book" />
-    
+        tools:layout="@layout/fragment_book" >
+        <action
+            android:id="@+id/action_book_destination_to_book_detail_dialog"
+            app:destination="@id/book_detail_dialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/book_detail_dialog"
+        android:name="com.aesthomic.readinglog.book.BookDetailDialogFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_book_detail_dialog">
+        <argument
+            android:name="bookKey"
+            app:argType="long" />
+    </dialog>
+
 </navigation>
