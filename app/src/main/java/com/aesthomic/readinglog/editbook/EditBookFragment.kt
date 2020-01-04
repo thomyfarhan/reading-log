@@ -2,12 +2,11 @@ package com.aesthomic.readinglog.editbook
 
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.book.BookViewModel
@@ -27,6 +26,8 @@ class EditBookFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_edit_book, container, false)
 
+        setHasOptionsMenu(true)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         viewModel.setBookKey(EditBookFragmentArgs.fromBundle(arguments!!).readKey)
@@ -42,8 +43,27 @@ class EditBookFragment : Fragment() {
             }
         })
 
+        viewModel.eventNavigateBook.observe(this, Observer {
+            if (it) {
+                this.findNavController().navigate(
+                    EditBookFragmentDirections.actionEditBookDestinationToBookDestination()
+                )
+                viewModel.onNavigateBookDone()
+            }
+        })
+
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_edit_book, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.edit_book_done -> viewModel.onUpdateBook()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
