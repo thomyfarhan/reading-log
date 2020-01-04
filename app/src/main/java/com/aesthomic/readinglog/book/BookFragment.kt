@@ -35,11 +35,18 @@ class BookFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvBook.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        val adapter = BookAdapter(BookListener {
-            this.findNavController().navigate(
-                BookFragmentDirections.actionBookDestinationToBookDetailDialog(it)
-            )
-        })
+        val adapter = BookAdapter(
+            BookListener {
+                this.findNavController().navigate(
+                    BookFragmentDirections.actionBookDestinationToBookDetailDialog(it)
+                )
+            },
+            BookLongListener {
+                this.findNavController().navigate(
+                    BookFragmentDirections.actionBookDestinationToEditBookDestination(it)
+                )
+                true
+            })
 
         binding.rvBook.adapter = adapter
 
