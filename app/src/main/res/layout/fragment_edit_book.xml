@@ -1,11 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".editbook.EditBookFragment">
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".editbook.EditBookFragment">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_edit_book_photo"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:layout_constraintStart_toStartOf="@id/gl_edit_book_start"
+                app:layout_constraintEnd_toEndOf="@id/gl_edit_book_end"
+                app:layout_constraintTop_toTopOf="@id/gl_edit_book_top"
+                tools:src="@drawable/ic_photo"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_edit_book_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vertical_margin"
+                app:layout_constraintStart_toStartOf="@id/et_edit_book_page"
+                app:layout_constraintEnd_toEndOf="@id/et_edit_book_page"
+                app:layout_constraintTop_toBottomOf="@id/iv_edit_book_photo"
+                android:inputType="text"
+                android:textSize="15sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_edit_book_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintStart_toStartOf="@id/gl_edit_book_start"
+                app:layout_constraintBottom_toBottomOf="@id/et_edit_book_title"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/book_title"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_edit_book_page"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_vertical_margin"
+                app:layout_constraintStart_toStartOf="@id/et_edit_book_desc"
+                app:layout_constraintEnd_toEndOf="@id/et_edit_book_desc"
+                app:layout_constraintTop_toBottomOf="@id/et_edit_book_title"
+                android:inputType="number"
+                android:textSize="15sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_edit_book_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintStart_toStartOf="@id/gl_edit_book_start"
+                app:layout_constraintBottom_toBottomOf="@id/et_edit_book_page"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/book_page"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_edit_book_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_vertical_margin"
+                android:layout_marginStart="@dimen/vertical_margin"
+                app:layout_constraintStart_toEndOf="@id/tv_edit_book_desc"
+                app:layout_constraintEnd_toEndOf="@id/gl_edit_book_end"
+                app:layout_constraintTop_toBottomOf="@id/et_edit_book_page"
+                app:layout_constraintBottom_toBottomOf="@id/gl_edit_book_bottom"
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:minLines="4"
+                android:scrollbars="vertical"
+                android:gravity="bottom|start"
+                android:textSize="15sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_edit_book_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintStart_toStartOf="@id/gl_edit_book_start"
+                app:layout_constraintBottom_toBottomOf="@id/et_edit_book_desc"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/book_description"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_edit_book_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/horizontal_margin" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_edit_book_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/horizontal_margin" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_edit_book_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/horizontal_margin" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_edit_book_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="@dimen/horizontal_margin" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
