@@ -12,7 +12,8 @@ import com.aesthomic.readinglog.databinding.ItemListBookBinding
 import com.bumptech.glide.Glide
 import java.io.File
 
-class BookAdapter: ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
+class BookAdapter(private val clickListener: BookListener):
+    ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         return BookViewHolder.from(parent)
@@ -20,13 +21,16 @@ class BookAdapter: ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallbac
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         val book = getItem(position)
-        holder.bind(book)
+        holder.bind(book, clickListener)
     }
 
     class BookViewHolder(private val binding: ItemListBookBinding):
         RecyclerView.ViewHolder(binding. root) {
 
-        fun bind(book: Book) {
+        fun bind(book: Book, clickListener: BookListener) {
+            binding.book = book
+            binding.clickListener = clickListener
+
             val imgPath = Uri.parse(book.photo).path
             val context = binding.ivBookPhoto.context
 
@@ -56,4 +60,8 @@ class BookDiffCallback: DiffUtil.ItemCallback<Book>() {
         return oldItem == newItem
     }
 
+}
+
+class BookListener(val clickListener: (key: Long) -> Unit) {
+    fun onClick(book: Book) = clickListener(book.id)
 }
