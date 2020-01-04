@@ -4,8 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
+import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import com.aesthomic.readinglog.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -84,8 +88,32 @@ fun String.pluralize(value: Long, pluralize: String?): String {
     }
 }
 
+@BindingAdapter("pluralizePageText")
+fun TextView.setPluralizePageText(page: Int?) {
+    page?.let {
+        text = resources.getString(R.string.page_format, it, "page".pluralize(it.toLong()))
+    }
+}
+
+@BindingAdapter("srcByUriString")
+fun ImageView.setSrcByUriString(uriString: String?) {
+    if (!uriString.isNullOrBlank()) {
+        setImageURI(Uri.parse(uriString))
+    } else {
+        setImageResource(R.drawable.ic_photo)
+    }
+}
+
 fun hideKeyboard(context: Context, view: View) {
     val imm = context.getSystemService(
         Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun setVisibilityByString(string: String): Int {
+    return if (string.isBlank()) {
+        View.GONE
+    } else {
+        View.VISIBLE
+    }
 }
