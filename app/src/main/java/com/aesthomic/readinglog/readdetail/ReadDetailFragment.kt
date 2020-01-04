@@ -22,7 +22,6 @@ class ReadDetailFragment : Fragment() {
     private lateinit var viewModel: ReadDetailViewModel
 
     private lateinit var callback: OnBackPressedCallback
-    private lateinit var item: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,7 +77,6 @@ class ReadDetailFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_read_detail, menu)
-        item = menu.findItem(R.id.read_detail_delete)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -104,15 +102,12 @@ class ReadDetailFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         callback.isEnabled = false
-        item.isVisible = false
+        setMenuVisibility(false)
     }
 
     override fun onResume() {
         super.onResume()
         callback.isEnabled = true
-
-        if(::item.isInitialized) {
-            item.isVisible = true
-        }
+        setMenuVisibility(true)
     }
 }

@@ -17,7 +17,7 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
     val book = MediatorLiveData<Book>()
 
     val descVisibility = Transformations.map(book) {
-        setVisibilityByString(it.desc)
+        setVisibilityByString(it?.desc)
     }
 
     val bookTitleField = MutableLiveData<String>()

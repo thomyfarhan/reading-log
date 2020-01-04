@@ -110,8 +110,8 @@ fun hideKeyboard(context: Context, view: View) {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun setVisibilityByString(string: String): Int {
-    return if (string.isBlank()) {
+fun setVisibilityByString(string: String?): Int {
+    return if (string.isNullOrBlank()) {
         View.GONE
     } else {
         View.VISIBLE
