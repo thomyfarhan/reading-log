@@ -1,9 +1,6 @@
 package com.aesthomic.readinglog.book
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.aesthomic.readinglog.database.Book
 import com.aesthomic.readinglog.database.BookDao
 import com.aesthomic.readinglog.util.setVisibilityByString
@@ -23,6 +20,14 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
         setVisibilityByString(it.desc)
     }
 
+    val bookTitleField = MutableLiveData<String>()
+    val bookPageField = MutableLiveData<String>()
+    val bookDescField = MutableLiveData<String>()
+
+    private val _eventNavigateBook = MutableLiveData<Boolean>()
+    val eventNavigateBook: LiveData<Boolean>
+        get() = _eventNavigateBook
+
     init {
         setBookMediatorSource()
     }
@@ -39,10 +44,33 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
         bookKey.value = key
     }
 
+    fun onUpdateBook() {
+        uiScope.launch {
+            val newBook = book.value ?: return@launch
+            with(newBook) {
+                title = bookTitleField.value ?: ""
+                page = bookPageField.value?.toInt() ?: 0
+                desc = bookDescField.value ?: ""
+            }
+            updateBook(newBook)
+        }
+        _eventNavigateBook.value = true
+    }
+
     private suspend fun getBookByKey(key: Long): Book? {
         return withContext(Dispatchers.IO) {
             dbBook.get(key)
         }
+    }
+
+    private suspend fun updateBook(book: Book) {
+        withContext(Dispatchers.IO) {
+            dbBook.update(book)
+        }
+    }
+
+    fun onNavigateBookDone() {
+        _eventNavigateBook.value = false
     }
 
     override fun onCleared() {
