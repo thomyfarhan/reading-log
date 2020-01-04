@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_book_destination_to_book_detail_dialog"
             app:destination="@id/book_detail_dialog" />
+        <action
+            android:id="@+id/action_book_destination_to_edit_book_destination"
+            app:destination="@id/edit_book_destination" />
     </fragment>
 
     <dialog
@@ -24,5 +27,20 @@
             android:name="bookKey"
             app:argType="long" />
     </dialog>
+
+    <fragment
+        android:id="@+id/edit_book_destination"
+        android:name="com.aesthomic.readinglog.editbook.EditBookFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_edit_book">
+        <argument
+            android:name="readKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_edit_book_destination_to_book_destination"
+            app:destination="@id/book_destination"
+            app:popUpTo="@id/book_destination"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 </navigation>
