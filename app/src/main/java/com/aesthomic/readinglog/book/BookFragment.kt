@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 
 import com.aesthomic.readinglog.R
@@ -34,7 +35,11 @@ class BookFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvBook.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        val adapter = BookAdapter()
+        val adapter = BookAdapter(BookListener {
+            this.findNavController().navigate(
+                BookFragmentDirections.actionBookDestinationToBookDetailDialog(it)
+            )
+        })
 
         binding.rvBook.adapter = adapter
 
