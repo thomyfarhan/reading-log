@@ -23,4 +23,5 @@
     <string name="page_format">%1$d %2$s</string>
     <string name="book_page">Book Page</string>
     <string name="book_description">Book \nDescription</string>
+    <string name="done">Done</string>
 </resources>
