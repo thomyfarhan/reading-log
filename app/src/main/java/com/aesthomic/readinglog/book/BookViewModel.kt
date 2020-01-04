@@ -48,7 +48,7 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
         updateInability.addSource(bookPageField) {checkUpdateField()}
     }
 
-    private fun checkUpdateField() {
+    fun checkUpdateField() {
         updateInability.value = !(bookTitleField.value.isNullOrBlank()
                 || bookPageField.value.isNullOrBlank())
     }
