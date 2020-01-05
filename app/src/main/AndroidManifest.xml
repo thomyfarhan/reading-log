@@ -25,6 +25,7 @@
                 android:resource="@xml/file_paths"/>
         </provider>
         <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
