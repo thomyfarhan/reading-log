@@ -24,6 +24,7 @@ class TabMainFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_tab_main, container, false)
 
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbarMain)
         setupTab()
 
         return binding.root
