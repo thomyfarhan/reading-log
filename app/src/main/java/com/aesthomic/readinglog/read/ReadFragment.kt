@@ -124,6 +124,27 @@ class ReadFragment : Fragment() {
                 adapter.addSubmitList(it)
             }
         })
+
+        binding.rvRead.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    binding.fabDelete.hide()
+                    binding.fabStart.hide()
+                    binding.fabStop.hide()
+                } else if (dy < 0) {
+                    binding.fabDelete.show()
+                    viewModel.fabVisibility.value?.let {
+                        if (it) {
+                            binding.fabStart.show()
+                            binding.fabStop.hide()
+                        } else {
+                            binding.fabStop.show()
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun initViewModel() {
