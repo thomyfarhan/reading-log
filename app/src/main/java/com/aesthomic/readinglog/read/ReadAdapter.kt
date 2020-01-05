@@ -47,6 +47,10 @@ class ReadAdapter(private val clickListener: ReadListener):
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return getItem(position).id
+    }
+
     /**
      * Return the view type based on DataItem type
      */

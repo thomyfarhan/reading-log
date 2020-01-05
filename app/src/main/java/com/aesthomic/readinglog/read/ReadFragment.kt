@@ -13,19 +13,27 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.app.di.Scopes
+import com.aesthomic.readinglog.customview.SwipeToDeleteCallback
+import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.database.ReadingLogDatabase
 import com.aesthomic.readinglog.databinding.FragmentReadBinding
 import com.aesthomic.readinglog.readbook.ReadBookViewModel
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.getKoin
 
 class ReadFragment : Fragment() {
 
     private lateinit var binding: FragmentReadBinding
     private lateinit var viewModel: ReadViewModel
+    private lateinit var adapter: ReadAdapter
+
+    private var readKeyDelete = -1L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +44,7 @@ class ReadFragment : Fragment() {
 
         initViewModel()
         initRecyclerView()
+        enableSwipeToDelete()
         killReadBookScope()
 
         viewModel.navigateToReadBook.observe(this, Observer {
@@ -77,6 +86,15 @@ class ReadFragment : Fragment() {
             }
         })
 
+        viewModel.read.observe(this, Observer {
+            if (it?.id == readKeyDelete) {
+                viewModel.deleteReadById(readKeyDelete)
+
+                setUndoSnackbar(it)
+                viewModel.setReadKey(-1L)
+            }
+        })
+
         return binding.root
     }
 
@@ -95,7 +113,7 @@ class ReadFragment : Fragment() {
     private fun initRecyclerView() {
         binding.rvRead.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = ReadAdapter(ReadListener {
+        adapter = ReadAdapter(ReadListener {
             viewModel.onReadClicked(it)
         })
 
@@ -118,6 +136,34 @@ class ReadFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+    }
+
+    private fun enableSwipeToDelete() {
+        val swipeToDeleteCallback = object: SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                readKeyDelete = adapter.getItemId(position)
+                viewModel.setReadKey(readKeyDelete)
+
+            }
+
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rvRead)
+
+    }
+
+    private fun setUndoSnackbar(read: Read) {
+        val snackbar = Snackbar
+            .make(binding.clRead, "Item was removed", Snackbar.LENGTH_LONG)
+            .setAnchorView(binding.fabDelete)
+        snackbar.setAction("UNDO") {
+            viewModel.insertRead(read)
+        }
+
+        snackbar.setActionTextColor(Color.YELLOW)
+        snackbar.show()
     }
 
 
