@@ -14,7 +14,6 @@ import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.book.BookViewModel
 import com.aesthomic.readinglog.databinding.FragmentEditBookBinding
 import com.aesthomic.readinglog.util.hideKeyboard
-import com.aesthomic.readinglog.util.setSrcByUriString
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class EditBookFragment : Fragment() {
@@ -32,22 +31,12 @@ class EditBookFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_edit_book, container, false)
 
+        viewModel.clearBook()
+        viewModel.setBookKey(EditBookFragmentArgs.fromBundle(arguments!!).readKey)
+
         setHasOptionsMenu(true)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-
-        viewModel.setBookKey(EditBookFragmentArgs.fromBundle(arguments!!).readKey)
-
-        viewModel.book.observe(this, Observer {
-            it?.let {
-                with(binding) {
-                    ivEditBookPhoto.setSrcByUriString(it.photo)
-                    etEditBookTitle.setText(it.title)
-                    etEditBookPage.setText(it.page.toString())
-                    etEditBookDesc.setText(it.desc)
-                }
-            }
-        })
 
         viewModel.eventNavigateBook.observe(this, Observer {
             if (it) {

@@ -39,6 +39,9 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
         book.addSource(bookKey) {
             uiScope.launch {
                 book.value = getBookByKey(it)
+                bookTitleField.value = book.value?.title
+                bookPageField.value = book.value?.page.toString()
+                bookDescField.value = book.value?.desc
             }
         }
     }
@@ -55,6 +58,10 @@ class BookViewModel(private val dbBook: BookDao): ViewModel() {
 
     fun setBookKey(key: Long) {
         bookKey.value = key
+    }
+
+    fun clearBook() {
+        book.value = null
     }
 
     fun onUpdateBook() {
