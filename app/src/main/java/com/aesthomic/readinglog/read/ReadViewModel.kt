@@ -1,10 +1,7 @@
 package com.aesthomic.readinglog.read
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.database.ReadDao
 import kotlinx.coroutines.*
@@ -37,14 +34,38 @@ class ReadViewModel(
         it.isNotEmpty()
     }
 
+    private val readKey = MutableLiveData<Long>()
+
+    private val _read = MediatorLiveData<Read>()
+    val read: LiveData<Read>
+        get() = _read
+
     init {
         initializeCurrentRead()
+        _read.addSource(readKey) {initReadById(it)}
     }
 
     private fun initializeCurrentRead() {
         uiScope.launch {
             currentRead.value = getCurrentFromDatabase()
         }
+    }
+
+    private fun initReadById(key: Long) {
+        uiScope.launch {
+            _read.value = getReadById(key)
+        }
+    }
+
+    fun insertRead(read: Read) {
+        uiScope.launch {
+            insert(read)
+            currentRead.value = getCurrentFromDatabase()
+        }
+    }
+
+    fun setReadKey(key: Long) {
+        readKey.value = key
     }
 
     private suspend fun getCurrentFromDatabase(): Read? {
@@ -54,6 +75,21 @@ class ReadViewModel(
                 read = null
             }
             read
+        }
+    }
+
+    private suspend fun getReadById(key: Long): Read? {
+        return withContext(Dispatchers.IO) {
+            database.get(key)
+        }
+    }
+
+    fun deleteReadById(key: Long) {
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                database.delete(key)
+            }
+            currentRead.value = getCurrentFromDatabase()
         }
     }
 
@@ -106,5 +142,6 @@ class ReadViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+        _read.removeSource(readKey)
     }
 }
