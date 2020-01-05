@@ -9,61 +9,70 @@
             type="com.aesthomic.readinglog.read.ReadViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_read"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".read.ReadFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_read"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/fab_delete"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:visibility="invisible"
-            android:src="@drawable/ic_play_arrow"
-            android:onClick="@{() -> viewModel.onStartReading()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:maxImageSize="@dimen/fab_icon"
-            app:tint="@color/colorStart"
-            app:backgroundTint="@color/colorFab"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_read"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:visibility="invisible"
-            android:src="@drawable/ic_stop"
-            android:onClick="@{() -> viewModel.onStopReading()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="@dimen/fab_icon"
-            app:tint="@color/colorStop"
-            app:backgroundTint="@color/colorFab"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:visibility="invisible"
+                android:src="@drawable/ic_play_arrow"
+                android:onClick="@{() -> viewModel.onStartReading()}"
+                app:layout_constraintEnd_toEndOf="@id/fab_stop"
+                app:layout_constraintBottom_toBottomOf="@id/fab_stop"
+                app:maxImageSize="@dimen/fab_icon"
+                app:tint="@color/colorStart"
+                app:backgroundTint="@color/colorFab"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:src="@drawable/ic_delete"
-            android:clickable="@{viewModel.deleteEnable}"
-            android:onClick="@{() -> viewModel.onDelete()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:maxImageSize="@dimen/fab_icon"
-            app:tint="@color/colorDelete"
-            app:backgroundTint="@color/colorFabDelete"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:visibility="invisible"
+                android:src="@drawable/ic_stop"
+                android:onClick="@{() -> viewModel.onStopReading()}"
+                android:layout_marginEnd="@dimen/half_horizontal_margin"
+                app:layout_constraintBottom_toBottomOf="@id/fab_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:maxImageSize="@dimen/fab_icon"
+                app:tint="@color/colorStop"
+                app:backgroundTint="@color/colorFab"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:src="@drawable/ic_delete"
+                android:clickable="@{viewModel.deleteEnable}"
+                android:onClick="@{() -> viewModel.onDelete()}"
+                android:layout_marginStart="@dimen/half_horizontal_margin"
+                android:layout_marginBottom="@dimen/half_vertical_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:maxImageSize="@dimen/fab_icon"
+                app:tint="@color/colorDelete"
+                app:backgroundTint="@color/colorFabDelete"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
