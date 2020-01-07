@@ -26,7 +26,7 @@ class ReadViewModel(
 
     val readBook = database.getAllReadBook()
 
-    val fabVisibility = Transformations.map(currentRead) {
+    val fabState = Transformations.map(currentRead) {
         it == null
     }
 
@@ -112,14 +112,20 @@ class ReadViewModel(
         }
     }
 
-    fun onStopReading() {
+    fun onReading() {
+        fabState.value?.let {
+            if(it) onStartReading() else onStopReading()
+        }
+    }
+
+    private fun onStopReading() {
         uiScope.launch {
             val oldRead = currentRead.value ?: return@launch
             _navigateToReadBook.value = oldRead
         }
     }
 
-    fun onStartReading() {
+    private fun onStartReading() {
         uiScope.launch {
             val read = Read(startTimeMillis = System.currentTimeMillis())
             insert(read)

@@ -29,39 +29,20 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_start"
+                android:id="@+id/fab_read"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:visibility="invisible"
-                android:src="@drawable/ic_play_arrow"
-                android:onClick="@{() -> viewModel.onStartReading()}"
-                app:layout_constraintEnd_toEndOf="@id/fab_stop"
-                app:layout_constraintBottom_toBottomOf="@id/fab_stop"
-                app:maxImageSize="@dimen/fab_icon"
-                app:tint="@color/colorStart"
-                app:backgroundTint="@color/colorFab"/>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:visibility="invisible"
-                android:src="@drawable/ic_stop"
-                android:onClick="@{() -> viewModel.onStopReading()}"
+                android:onClick="@{() -> viewModel.onReading()}"
                 android:layout_marginEnd="@dimen/half_horizontal_margin"
                 app:layout_constraintBottom_toBottomOf="@id/fab_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:maxImageSize="@dimen/fab_icon"
-                app:tint="@color/colorStop"
                 app:backgroundTint="@color/colorFab"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
                 android:src="@drawable/ic_delete"
                 android:clickable="@{viewModel.deleteEnable}"
                 android:onClick="@{() -> viewModel.onDelete()}"

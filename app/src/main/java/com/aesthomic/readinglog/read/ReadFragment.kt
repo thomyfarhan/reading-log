@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -67,13 +68,15 @@ class ReadFragment : Fragment() {
             }
         })
 
-        viewModel.fabVisibility.observe(this, Observer {
+        viewModel.fabState.observe(this, Observer {
             if (it) {
-                binding.fabStart.visibility = View.VISIBLE
-                binding.fabStop.visibility = View.INVISIBLE
+                binding.fabRead.setImageResource(R.drawable.ic_play_arrow)
+                binding.fabRead.imageTintList = ColorStateList.
+                    valueOf(ContextCompat.getColor(requireContext(), R.color.colorStart))
             } else {
-                binding.fabStart.visibility = View.INVISIBLE
-                binding.fabStop.visibility = View.VISIBLE
+                binding.fabRead.setImageResource(R.drawable.ic_stop)
+                binding.fabRead.imageTintList = ColorStateList.
+                    valueOf(ContextCompat.getColor(requireContext(), R.color.colorStop))
             }
         })
 
@@ -128,20 +131,12 @@ class ReadFragment : Fragment() {
         binding.rvRead.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
-                    binding.fabDelete.hide()
-                    binding.fabStart.hide()
-                    binding.fabStop.hide()
-                } else if (dy < 0) {
+                if (dy < 0 || recyclerView.size <= 7) {
                     binding.fabDelete.show()
-                    viewModel.fabVisibility.value?.let {
-                        if (it) {
-                            binding.fabStart.show()
-                            binding.fabStop.hide()
-                        } else {
-                            binding.fabStop.show()
-                        }
-                    }
+                    binding.fabRead.show()
+                } else if (dy > 0 && recyclerView.size > 7) {
+                    binding.fabDelete.hide()
+                    binding.fabRead.hide()
                 }
             }
         })
