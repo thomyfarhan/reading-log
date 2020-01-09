@@ -25,6 +25,7 @@ import com.aesthomic.readinglog.database.Read
 import com.aesthomic.readinglog.database.ReadingLogDatabase
 import com.aesthomic.readinglog.databinding.FragmentReadBinding
 import com.aesthomic.readinglog.readbook.ReadBookViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.getKoin
 
@@ -99,6 +100,23 @@ class ReadFragment : Fragment() {
             }
         })
 
+        viewModel.eventDelete.observe(this, Observer {
+            if (it) {
+                val dialog = MaterialAlertDialogBuilder(requireActivity())
+                with(dialog) {
+                    setTitle("Delete ALL")
+                    setMessage("Really??!!")
+                    setPositiveButton("YES") {_, _ ->
+                        viewModel.onDelete()
+                    }
+                    setNegativeButton("NO", null)
+                }
+                dialog.show()
+
+                viewModel.onDeleteDone()
+            }
+        })
+
         return binding.root
     }
 
@@ -161,9 +179,7 @@ class ReadFragment : Fragment() {
                 val position = viewHolder.adapterPosition
                 readKeyDelete = adapter.getItemId(position)
                 viewModel.setReadKey(readKeyDelete)
-
             }
-
         }
 
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
@@ -186,6 +202,8 @@ class ReadFragment : Fragment() {
         snackbar.setActionTextColor(Color.YELLOW)
         snackbar.show()
     }
+
+
 
 
 }

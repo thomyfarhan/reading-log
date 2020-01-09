@@ -24,6 +24,10 @@ class ReadViewModel(
     val navigateToDetail: LiveData<Long?>
         get() = _navigateToDetail
 
+    private val _eventDelete = MutableLiveData<Boolean>()
+    val eventDelete: LiveData<Boolean>
+        get() = _eventDelete
+
     val readBook = database.getAllReadBook()
 
     val fabState = Transformations.map(currentRead) {
@@ -143,6 +147,14 @@ class ReadViewModel(
 
     fun onNavigateDetailDone() {
         _navigateToDetail.value = null
+    }
+
+    fun onEventDelete() {
+        _eventDelete.value = true
+    }
+
+    fun onDeleteDone() {
+        _eventDelete.value = false
     }
 
     override fun onCleared() {

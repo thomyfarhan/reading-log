@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_delete"
             android:clickable="@{viewModel.deleteEnable}"
-            android:onClick="@{() -> viewModel.onDelete()}"
+            android:onClick="@{() -> viewModel.onEventDelete()}"
             android:layout_marginStart="@dimen/half_horizontal_margin"
             android:layout_marginBottom="@dimen/half_vertical_margin"
             android:layout_gravity="bottom|start"
