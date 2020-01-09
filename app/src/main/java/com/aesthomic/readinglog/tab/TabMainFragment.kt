@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import com.aesthomic.readinglog.R
 import com.aesthomic.readinglog.databinding.FragmentTabMainBinding
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayout
 import kotlin.math.abs
 
 class TabMainFragment : Fragment() {
@@ -28,15 +29,20 @@ class TabMainFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_tab_main, container, false)
 
+        setupActionBar()
+        setupTab()
+
+        return binding.root
+    }
+
+    private fun setupActionBar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbarMain)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        setupTab()
+        binding.tvMainSubtitle.setText(TabMainAdapter.tabTitles[0])
 
         binding.ablMain.addOnOffsetChangedListener(
             AppBarLayout.OnOffsetChangedListener { _, offset ->
 
-                val currentItem = binding.vpMain.currentItem
                 val transition = Fade()
                 with(transition) {
                     duration = 600
@@ -46,14 +52,11 @@ class TabMainFragment : Fragment() {
                 if (abs(offset) == binding.ablMain.totalScrollRange) {
                     TransitionManager.beginDelayedTransition(binding.clToolbarMain, transition)
                     binding.tvMainSubtitle.visibility = View.VISIBLE
-                    binding.tvMainSubtitle.setText(TabMainAdapter.tabTitles[currentItem])
                 } else {
                     binding.tvMainSubtitle.visibility = View.GONE
                 }
             }
         )
-
-        return binding.root
     }
 
     private fun setupTab() {
@@ -61,6 +64,16 @@ class TabMainFragment : Fragment() {
         binding.vpMain.setSwipePagingEnabled(false)
         binding.vpMain.adapter = tabMainAdapter
         binding.tlMain.setupWithViewPager(binding.vpMain)
+
+        binding.tlMain.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val subtitle = TabMainAdapter.tabTitles[tab.position]
+                binding.tvMainSubtitle.setText(subtitle)
+            }
+
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
