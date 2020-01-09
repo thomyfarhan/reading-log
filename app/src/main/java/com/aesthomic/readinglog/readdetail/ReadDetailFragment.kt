@@ -42,6 +42,13 @@ class ReadDetailFragment : Fragment() {
             }
         })
 
+        viewModel.book.observe(this, Observer {
+            it?.let {
+                binding.clReadDetail.visibility = View.VISIBLE
+                binding.pbReadDetail.visibility = View.GONE
+            }
+        })
+
         setHasOptionsMenu(true)
 
         return binding.root
