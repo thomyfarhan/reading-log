@@ -11,7 +11,9 @@ import com.aesthomic.readinglog.host.ReadHostFragment
 class TabMainAdapter(private val context: Context, fm: FragmentManager):
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val tabTitles = intArrayOf(R.string.tab_main_1, R.string.tab_main_2)
+    companion object {
+        val tabTitles = intArrayOf(R.string.tab_main_1, R.string.tab_main_2)
+    }
 
     override fun getItem(position: Int): Fragment {
         return when(position) {
