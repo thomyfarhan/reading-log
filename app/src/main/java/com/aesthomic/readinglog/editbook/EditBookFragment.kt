@@ -54,6 +54,13 @@ class EditBookFragment : Fragment() {
             }
         })
 
+        viewModel.book.observe(this, Observer {
+            it?.let {
+                binding.clEditBook.visibility = View.VISIBLE
+                binding.pbEditBook.visibility = View.GONE
+            }
+        })
+
         return binding.root
     }
 
