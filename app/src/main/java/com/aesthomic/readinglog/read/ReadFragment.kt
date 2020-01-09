@@ -174,9 +174,13 @@ class ReadFragment : Fragment() {
     private fun setUndoSnackbar(read: Read) {
         val snackbar = Snackbar
             .make(binding.clRead, "Item was removed", Snackbar.LENGTH_LONG)
-            .setAnchorView(binding.fabDelete)
+            .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
         snackbar.setAction("UNDO") {
             viewModel.insertRead(read)
+        }
+
+        if (binding.fabDelete.isShown) {
+            snackbar.anchorView = binding.fabDelete
         }
 
         snackbar.setActionTextColor(Color.YELLOW)
