@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.size
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -46,6 +46,7 @@ class ReadFragment : Fragment() {
         initViewModel()
         initRecyclerView()
         enableSwipeToDelete()
+        setFABVisibility()
         killReadBookScope()
 
         viewModel.navigateToReadBook.observe(this, Observer {
@@ -101,6 +102,19 @@ class ReadFragment : Fragment() {
         return binding.root
     }
 
+    private fun setFABVisibility() {
+        binding.nsvRead.setOnScrollChangeListener { v: NestedScrollView?, _,
+                                                    scrollY: Int, _, oldScrollY: Int ->
+            if (scrollY > oldScrollY) {
+                binding.fabDelete.hide()
+                binding.fabRead.hide()
+            } else {
+                binding.fabDelete.show()
+                binding.fabRead.show()
+            }
+        }
+    }
+
     private fun killReadBookScope() {
         val readBookScope = if (getKoin().getScopeOrNull(Scopes.READ_BOOK) != null) {
             getKoin().getScope(Scopes.READ_BOOK)
@@ -125,19 +139,6 @@ class ReadFragment : Fragment() {
         viewModel.readBook.observe(this, Observer {
             it?.let {
                 adapter.addSubmitList(it)
-            }
-        })
-
-        binding.rvRead.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy < 0 || recyclerView.size <= 7) {
-                    binding.fabDelete.show()
-                    binding.fabRead.show()
-                } else if (dy > 0 && recyclerView.size > 7) {
-                    binding.fabDelete.hide()
-                    binding.fabRead.hide()
-                }
             }
         })
     }
