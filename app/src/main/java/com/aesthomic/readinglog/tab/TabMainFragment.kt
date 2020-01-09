@@ -21,6 +21,7 @@ import kotlin.math.abs
 class TabMainFragment : Fragment() {
 
     lateinit var binding: FragmentTabMainBinding
+    private var isExpanded = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,11 +53,21 @@ class TabMainFragment : Fragment() {
                 if (abs(offset) == binding.ablMain.totalScrollRange) {
                     TransitionManager.beginDelayedTransition(binding.clToolbarMain, transition)
                     binding.tvMainSubtitle.visibility = View.VISIBLE
+                    isExpanded = false
                 } else {
                     binding.tvMainSubtitle.visibility = View.GONE
+                    isExpanded = true
                 }
             }
         )
+
+        binding.toolbarMain.setOnClickListener {
+            if (isExpanded) {
+                binding.ablMain.setExpanded(false)
+            } else {
+                binding.ablMain.setExpanded(true)
+            }
+        }
     }
 
     private fun setupTab() {
