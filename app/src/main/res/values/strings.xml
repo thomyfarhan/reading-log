@@ -24,4 +24,6 @@
     <string name="book_page">Book Page</string>
     <string name="book_description">Book \nDescription</string>
     <string name="done">Done</string>
+    <string name="grant_permission">Grant permission to storage for accessing your gallery!</string>
+    <string name="ungrant_permission">Permission Ungranted!</string>
 </resources>

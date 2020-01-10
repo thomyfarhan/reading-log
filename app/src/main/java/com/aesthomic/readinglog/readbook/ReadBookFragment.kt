@@ -1,8 +1,10 @@
 package com.aesthomic.readinglog.readbook
 
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -40,6 +43,7 @@ class ReadBookFragment : Fragment() {
         private const val REQUEST_PICK_IMAGE = 101
         private const val IMAGE_WIDTH = 750
         private const val IMAGE_HEIGHT = 750
+        private const val READ_EXTERNAL_STORAGE_REQUEST = 102
     }
 
     private lateinit var binding: FragmentReadBookBinding
@@ -123,7 +127,15 @@ class ReadBookFragment : Fragment() {
 
         viewModel.eventGallery.observe(this, Observer {
             if (it) {
-                openAlbumIntent()
+                if (ContextCompat.checkSelfPermission(requireContext(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        READ_EXTERNAL_STORAGE_REQUEST)
+                } else {
+                    openAlbumIntent()
+                }
                 viewModel.onGalleryDone()
             }
         })
@@ -185,6 +197,30 @@ class ReadBookFragment : Fragment() {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray) {
+        if (requestCode == READ_EXTERNAL_STORAGE_REQUEST) {
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openAlbumIntent()
+            } else {
+                val showRationale = shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+
+                if (showRationale) {
+                    Toast.makeText(requireContext(), getString(R.string.grant_permission),
+                        Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(requireContext(), getString(R.string.ungrant_permission),
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
     private fun setupBottomSheetBehavior() {
