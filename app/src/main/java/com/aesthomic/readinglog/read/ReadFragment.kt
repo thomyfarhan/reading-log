@@ -154,9 +154,9 @@ class ReadFragment : Fragment() {
 
         binding.rvRead.adapter = adapter
 
-        viewModel.readBook.observe(this, Observer {
+        viewModel.readList.observe(this, Observer {
             it?.let {
-                adapter.addSubmitList(it)
+                adapter.submitList(it)
             }
         })
     }

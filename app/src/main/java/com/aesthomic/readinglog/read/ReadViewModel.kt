@@ -30,6 +30,20 @@ class ReadViewModel(
 
     val readBook = database.getAllReadBook()
 
+    /**
+     * Add list and group the list with the data item type
+     * by adding conditial whether the read object is odd or even
+     */
+    val readList = Transformations.map(readBook) { readBooks ->
+        readBooks.map {
+            if (it.id % 2L == 0L) {
+                DataItem.ReadItemEven(it)
+            } else {
+                DataItem.ReadItemOdd(it)
+            }
+        }
+    }
+
     val fabState = Transformations.map(currentRead) {
         it == null
     }
